@@ -299,7 +299,18 @@
       pour lier Cruise a Port afin de faciliter le sens de lecture.</li>
     <li>Nous avons décidé d'utiliser des classes au lieu d'une énuération pour Sections afin que la classe soit plus
       flexible.</li>
-
+  </ul>
+  <h2>Statechart</h2>
+  <img src="img/statechart.png" alt="Statechart">
+  <p>
+      Voici quelques hypothèses et notre raisonnement derrière notre statechart :
+  </p>
+  <ul>
+      <li>Nous forçon l'utilisateur à choisir la puissance de cuisson HIGH, puis il a la possibilité de la changer.</li>
+      <li>Nous avons ajouté une variable maxDigits pour que l'utilisateur ne puiss|e pas choisir plus que 4 chiffres.</li>
+      <li>Nous supposons que lorsqu'il 4 chiffres sont entrées, les autres chiffres ne seront pas enregistrés, et le micro-onde attend que l'utilisateur clique sur start.</li>
+      <li>Nous avons ajouté une variable t représentant le temps en secondes des chiffres entrés.</li>
+      <li>Nous supposons que l'état deep history connait l'état précédent, et que si le micro-onde était en mode cuisson, il reprend de la transition start.</li>
   </ul>
   <h2>Diagramme de classe</h2>
   <a href="vpp/ClassDiagram.vpp">Lien vers le diagramme de classe</a>
@@ -316,9 +327,6 @@
 
   <a href="vpp/VerifyItinerarySequence.vpp">Vérification des vols disponibles</a>
   <img src="images/VerifyItinerarySequence.jpg" alt="Vérification des vols disponibles" />
-
-
-
   <p>
     Voici quelques hypothèses et notre raisonnement derrière notre diagramme de classe :
   </p>
