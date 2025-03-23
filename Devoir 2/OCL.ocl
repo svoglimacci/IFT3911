@@ -1,0 +1,61 @@
+-- Un aéroport est identifié par trois lettres uniques à chaque aéroport
+-- Un port est identifié par trois lettres uniques à chaque port 
+-- Une gare est identifiée par trois lettres uniques à chaque gare
+context Hub
+inv UniqueHubIds:
+	self.id.size() = 3 and 
+	Hub.allInstances() -> forAll(h1, h2 | h1 <> h2 implies h1.id <> h2.id)
+	|
+
+-- Un vol est identifié par un ID qui commence par deux lettres suivi d'une série de chiffres. 
+-- La partie alphabétique de l'ID d'un vol est unique à chaque compagnie et la partie numérique est unique à chaque vol au sein de la même compagnie.
+
+context Flight
+inv UniqueFlightID:
+    let Prefix: String = self.company.id.substring(1, 2) in
+    let suffix: String = self.id.substring(2) in
+    self.company.itineraries->select(i | i.oclIsTypeOf(Flight))->forAll(f | f.id.substring(1, 2) = prefix 
+	implies f.id.substring(2) <> suffix)
+
+
+-- L'aéroport de départ et d'arrivée d'un vol doit être différent.
+context Flight
+inv OriginNotEqualDestination:
+    self.hubs.first() <> self.hubs.last()
+
+-- Le port de départ et d'arrivée doit être le même
+context Cruise
+inv OriginEqualDestination:
+	 self.hubs.first() = self.hubs.last()
+inv:
+	self.arrivalDate - departureDate <= 21
+
+
+-- Un paquebot peut être assigné à plusieurs itinéraires tant qu'ils ne se chevauchent pas 
+context CruiseShip
+inv NoOverlappingItineraries:
+	self.itineraries -> forAll(i1, i2 |
+		i1.arrivalDate <= i2.arrivalDate or i2.arrivalDate <= i1.arrivalDate
+	)
+
+
+-- Tous les sièges d'une même section ont le même prix
+-- Toutes les cabines d'une même section ont le même prix
+context Section
+inv SamePricePerSection:
+	self.seatings -> forAll(s1, s2 | s1.price = s2.price)
+
+
+-- Le client peut réserver un siège disponible dans un vol (trajet) donné
+-- Le client peut réserver une cabine disponible pour un itinéraire donné 
+context Client
+inv CanReserveAvailable: 
+    self.reservations->forAll(r | 
+     r.seating.state = Available and 
+     self.ClientController.makeReservation(r.seating))
+
+-- Un siège réservé devient assigné à un passager une fois payé: le siège est donc confirmé
+context Reservation
+inv ConfirmOncePaid: 
+    self.transaction->exists(t | t.oclIsTypeOf(Payment) and t.validate()) implies
+    self.seating.state = SeatingState::confirmed
