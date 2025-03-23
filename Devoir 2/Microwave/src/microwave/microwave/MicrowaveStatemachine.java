@@ -131,18 +131,7 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	
 	private ITimer timer;
 	
-	private final boolean[] timeEvents = new boolean[2];
-	
-	private long maxDigits;
-	
-	protected long getMaxDigits() {
-		return maxDigits;
-	}
-	
-	protected void setMaxDigits(long value) {
-		this.maxDigits = value;
-	}
-	
+	private final boolean[] timeEvents = new boolean[3];
 	
 	private long t;
 	
@@ -177,8 +166,6 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		clearEvents();
 		clearOutEvents();
 		sCInterface.setPower(0);
-		
-		setMaxDigits(0);
 		
 		setT(0);
 	}
@@ -375,12 +362,16 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		
 		sCInterface.operationCallback.display("Finished");
 		
+		sCInterface.operationCallback.stopCook();
+		
 		sCInterface.operationCallback.beepOn();
 	}
 	
 	/* Entry action for state 'Cooking'. */
 	private void entryAction_Microwave_CookingProcess_CookingStates_Cooking() {
 		timer.setTimer(this, 1, (getT() * 1000), false);
+		
+		timer.setTimer(this, 2, (1 * 1000), false);
 		
 		sCInterface.operationCallback.cook();
 		
@@ -403,13 +394,13 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	
 	/* Entry action for state 'TimeSelection'. */
 	private void entryAction_Microwave_CookingProcess_CookingStates_TimeSelection() {
-		setMaxDigits(4);
-		
-		setT(((t * 10) + sCInterface.getDigitValue()));
+		sCInterface.operationCallback.displayTime(getT());
 	}
 	
 	/* Entry action for state 'Waiting'. */
 	private void entryAction_Microwave_Waiting() {
+		sCInterface.operationCallback.stopCook();
+		
 		sCInterface.operationCallback.display("Waiting");
 	}
 	
@@ -421,6 +412,8 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	/* Exit action for state 'Cooking'. */
 	private void exitAction_Microwave_CookingProcess_CookingStates_Cooking() {
 		timer.unsetTimer(this, 1);
+		
+		timer.unsetTimer(this, 2);
 	}
 	
 	/* 'default' enter sequence for state Idle */
@@ -705,7 +698,14 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 					exitSequence_Microwave_Idle();
 					enterSequence_Microwave_CookingProcess_default();
 				} else {
-					did_transition = false;
+					if (sCInterface.open) {
+						exitSequence_Microwave_Idle();
+						sCInterface.operationCallback.openDoor();
+						
+						enterSequence_Microwave_Waiting_default();
+					} else {
+						did_transition = false;
+					}
 				}
 			}
 		}
@@ -723,7 +723,14 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 					
 					enterSequence_Microwave_Waiting_default();
 				} else {
-					did_transition = false;
+					if (sCInterface.stop) {
+						exitSequence_Microwave_CookingProcess();
+						sCInterface.operationCallback.stopCook();
+						
+						enterSequence_Microwave_Idle_default();
+					} else {
+						did_transition = false;
+					}
 				}
 			}
 		}
@@ -757,7 +764,14 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 					exitSequence_Microwave_CookingProcess_CookingStates_Cooking();
 					enterSequence_Microwave_CookingProcess_CookingStates_Finished_default();
 				} else {
-					did_transition = false;
+					if (((timeEvents[2]) && (getT()>0))) {
+						exitSequence_Microwave_CookingProcess_CookingStates_Cooking();
+						setT((t - 1));
+						
+						enterSequence_Microwave_CookingProcess_CookingStates_Cooking_default();
+					} else {
+						did_transition = false;
+					}
 				}
 			}
 		}
@@ -819,9 +833,9 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		
 		if (try_transition) {
 			if (microwave_CookingProcess_react(try_transition)==false) {
-				if (((sCInterface.digit) && (getMaxDigits()>0))) {
+				if (((sCInterface.digit) && (getT()<=999))) {
 					exitSequence_Microwave_CookingProcess_CookingStates_TimeSelection();
-					setMaxDigits(maxDigits--);
+					setT(((t * 10) + sCInterface.getDigitValue()));
 					
 					enterSequence_Microwave_CookingProcess_CookingStates_TimeSelection_default();
 				} else {
