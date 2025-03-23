@@ -278,33 +278,105 @@
     </table>
     <h2>Réseau de Pétri</h2>
     <p>
-        !!!!!!!! IMAGE !!!!!
+        <img src="/Devoir 2/assets/reseau de petri.PNG" alt="Réseau de Pétri">
+        <br>
         Voici quelques hypothèses et notre raisonnement derrière notre réseau de Pétri :
     </p>
     <ul>
-        <li>Nous avons décidé de généraliser quelques classes comme Company, Itinerary et TransportHub afin de faciliter la réutilisabilité.</li>
-        <li>Nous avons décidé de ne pas généraliser les classes Econ et First car nous avons jugé qu'il y a trop de différences entre PlaneSection et TrainSection.</li>
-        <li>Nous avons décidé d'utiliser une classe d'association pour lier Reservation a Clien afin de ne pas avoir de cycle dans notre diagramme.</li>
-        <li>Nous avons décidé de mettre deux associations pour lier Flight a Aiport et trois associations (intermediatePort) pour lier Cruise a Port afin de faciliter le sens de lecture.</li>
-        <li>Nous avons décidé d'utiliser des classes au lieu d'une énuération pour Sections afin que la classe soit plus flexible.</li>
+        <li>Nous avons décidé de mettre un jeton dans la place de 'MTL' afin de représenter la présence d'une voiture a l'entrée de Montréal.</li>
+        <li>Nous avons décidé également de mettre un jeton dans la place de 'Lumière' afin de forcer le fait qu'une seule voiture peut rentrer en tout temps. Ainsi, afin de pouvoir franchir la transition 'Entrée vers R-S', il faut qu'il y ait un jeton de disponible dans la place 'Lumière'.</li>
+        <li>Afin de déterminer s'il y avait présence de famine dans notre réseau, nous avons testé notre réseau a l'aide de PIPE. Nous avons fais rouler 500 fois et 1000 fois notre réseau et il n'y avait pas eu de deadlock aux 2 essais.</li>
+        <li>Lois de conservations </li>
+        <li>Graphe de couverture </li>
+    </ul>
 
-    </ul>
-    <h2>Diagramme de classe</h2>
+    <h2>Statechart</h2>
     <p>
-        Voici quelques hypothèses et notre raisonnement derrière notre diagramme de classe :
+        <img src="" alt="Statechart">
+        <br>
+        Voici quelques hypothèses et notre raisonnement derrière notre Statechart :
     </p>
     <ul>
-        <li>Nous avons décidé d'omettre les getters et les setters afin de garder notre diagrame clair.</li>
-        <li>Nous avons décidé d'omettre les classes Service et Database afin de garder notre diagramme simple.</li>
-        <li>Nous avons décidé de garde notre Controller simple. Ideallement, il serait separe en deux.</li>
-        <li>Nous avons décidé de separer View en Client et Admin puisque c'est plus simple que gerer des permissions.</li>
+        <li>xx</li>
+        <li>xx</li>
+        <li>xx</li>
+        <li>xx</li>
+        <li>xx</li>
     </ul>
-    <h2>Contraintes OCL</h2>
+
+    <h2>Design logiciel</h2>
     <p>
-        Voici quelques hypothèses et notre raisonnement derrière nos contraites OCL :
+        <img src="" alt="Diagramme de classe">
+        <br>
+        Voici quelques hypothèses et notre raisonnement derrière notre Diagramme de classe :
     </p>
     <ul>
-        <li>Il y a certaines contraintes qui sont répétées car nous n'avons pas implémenté la généralisation de certaines classes dans le modèle du domaine.</li>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        <img src="" alt="Diagramme de séquence">
+        <br>
+        Voici quelques hypothèses et notre raisonnement derrière notre Diagramme de séquence :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        <img src="" alt="Diagramme de paquets">
+        <br>
+        Voici quelques hypothèses et notre raisonnement derrière notre Diagramme de paquets :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        Voici quelques hypothèses et notre raisonnement derrière nos contraintes OCL :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        Identification des modules réutilisables :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+
+    <h2>Qualité ddu design</h2>
+    <p>
+        Discussion du couplage et de la cohésion des modules :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        Discussion du fardeau des classes :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        <img src="" alt="Graphe IA">
+        <br>
+        Voici quelques hypothèses et notre raisonnement derrière notre graphe IA :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
+    </ul>
+    <p>
+        Justification de l'applicatin des principes de conception :
+    </p>
+    <ul>
+        <li>xx</li>
+        <li>xx</li>
     </ul>
 
 
