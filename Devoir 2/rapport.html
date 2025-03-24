@@ -364,6 +364,7 @@
 
     <u><h2>Qualité du design</h2></u>
 
+    <!--couplage et cohesion-->
     <h3>Discussion du couplage et de la cohésion des modules :</h3>
     <ul>
         <li>L’architecture du système démontre une bonne cohésion au sein des modules. Chaque classe est responsable d’une fonctionnalité précise, ce qui favorise la lisibilité et la maintenabilité du code. 
@@ -374,19 +375,30 @@
             réduisant les dépendances directes. Cependant, la conception se concentre sur un couplage par paquet, ce qui pourrait limiter l'évolutivité si les paquets deviennent trop spécifiques. 
             Ceci est efficace pour des systèmes simples, mais il faut faire attention pour que les dépendances ne deviennent pas trop fortes à mesure que le système se développe. </li>
     </ul>
+
+    <!--fardeau-->
+    <h3>Discussion du fardeau des classes :</h3>
+    <ul>
+        <li>Les classes AdminController et ClientController regroupent trop de responsabilités, allant de la gestion des paiements à la création d’itinéraires et de comptes.</li>
+        <li>Cela viole le principe de responsabilité unique (SRP) et rend ces classes difficiles à maintenir, tester et faire évoluer.        </li>
+    </ul>
     
+    <!--graphe ia-->
     <p>
         <h3>Observations derrière notre graphe IA :</h3>
         <img src="images/IAGraph.png" alt="Graphe IA">
     </p>
     <ul>
-        <li>Plusieurs paquets sont regroupés du côté gauche du graphe (I ≈ 0) avec un taux d’abstraction modéré (A ≈ 0.25 à 0.4). 
-            Cela indique des modules stables, peu dépendants d'autres paquets, mais également concrets — ils contiennent principalement des implémentations.</li>
-        <li>D’autres paquets se situent à droite du graphe (I ≈ 1) avec un taux d’abstraction faible à modéré (A ≈ 0.1 à 0.25). Ces paquets sont très instables, 
-            fortement dépendants d’autres modules, mais ne sont pas abstraits. Cela peut indiquer des paquets à risque, car leur forte dépendance combinée à leur faible abstraction peut rendre leur maintenance plus complexe.</li>
-        <li>Un point autour de (0.5, 0.25) est assez proche de la Main Sequence, indiquant un équilibre raisonnable entre abstraction et instabilité. Ce paquet est dans une position acceptable du point de vue de la conception.</li>
+        <li>Les paquets Users et Domain se trouvent du côté gauche du graphe (instabilité ≈ 0), avec un taux d’abstraction modéré (entre 0.22 et 0.33). 
+            Cela indique des modules stables et peu dépendants d'autres paquets, mais également assez concrets. Le paquet Users, en particulier, se situe loin de la Main Sequence (distance ≈ 0.67), 
+            ce qui le place dans une zone à risque, car il est très stable tout en manquant d’abstraction, ce qui peut compliquer son évolution.</li>
+        <li>Les paquets Controllers et View apparaissent en bas à droite du graphe (instabilité = 1, abstraction = 0), ce qui signifie qu’ils sont très instables et totalement concrets. 
+            Bien qu’alignés sur la Main Sequence (distance = 0), leur position indique une forte dépendance à d'autres modules sans protection par des abstractions, ce qui pourrait affecter leur flexibilité à long terme.</li>
+        <li>Les paquets Domain et Reservation se situent près du centre du graphe, autour de (1.0, 0.2), avec une distance raisonnable par rapport à la Main Sequence (≈ 0.2). 
+            Leur position indique un meilleur équilibre entre abstraction et instabilité, ce qui en fait des modules plus flexibles et mieux conçus du point de vue architectural.</li>
     </ul>
    
+    <!--principes de conception-->
     <h3>Justification de l'applicatin des principes de conception :</h3>
     <ul>
         <li>Le principe de séparation des responsabilités (SRP) est bien appliqué puisque chaque classe a une responsabilité clairement définie (ex. : Client, Reservation, CreditCard). 
