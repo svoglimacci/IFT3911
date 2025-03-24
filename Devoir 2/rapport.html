@@ -365,8 +365,11 @@
 
     <h3>Discussion du couplage et de la cohésion des modules :</h3>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>L’architecture du système démontre une bonne cohésion au sein des modules. Chaque classe est responsable d’une fonctionnalité précise, ce qui favorise la lisibilité et la maintenabilité du code. 
+            Par exemple, les classes Client, Reservation, CreditCard et Transaction sont fortement cohésives, chacune prenant en charge un aspect spécifique du processus de réservation et de paiement. 
+            De même, les entités Vehicle, Section et Seating sont bien structurées, et leurs spécialisations (avion, train, croisière) 
+            respectent une hiérarchie claire, contribuant à une bonne organisation du domaine métier.</li>
+        <li></li>
     </ul>
     
     <h3>Discussion du fardeau des classes :</h3>
@@ -375,13 +378,15 @@
         <li>xx</li>
     </ul>
     <p>
-        <img src="" alt="Graphe IA">
-        <br>
-        <h3>Voici quelques hypothèses et notre raisonnement derrière notre graphe IA :</h3>
+        <h3>Observations derrière notre graphe IA :</h3>
+        <img src="images/IAGraph.png" alt="Graphe IA">
     </p>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Plusieurs paquets sont regroupés du côté gauche du graphe (I ≈ 0) avec un taux d’abstraction modéré (A ≈ 0.25 à 0.4). 
+            Cela indique des modules stables, peu dépendants d'autres paquets, mais également concrets — ils contiennent principalement des implémentations.</li>
+        <li>D’autres paquets se situent à droite du graphe (I ≈ 1) avec un taux d’abstraction faible à modéré (A ≈ 0.1 à 0.25). Ces paquets sont très instables, 
+            fortement dépendants d’autres modules, mais ne sont pas abstraits. Cela peut indiquer des paquets à risque, car leur forte dépendance combinée à leur faible abstraction peut rendre leur maintenance plus complexe.</li>
+        <li>Un point autour de (0.5, 0.25) est assez proche de la Main Sequence, indiquant un équilibre raisonnable entre abstraction et instabilité. Ce paquet est dans une position acceptable du point de vue de la conception.</li>
     </ul>
    
     <h3>Justification de l'applicatin des principes de conception :</h3>
