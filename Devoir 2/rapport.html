@@ -282,7 +282,9 @@
     </table>
     <u><h2>Réseau de Pétri</h2></u>
     <p>
+        <a href="reseau de petri.xml" alt="Réseau de Pétri">Réseau de Pétri</a>
         <img src="images/reseau de petri.PNG" alt="Réseau de Pétri">
+        <br>
         <br>
         Voici quelques hypothèses et notre raisonnement derrière notre réseau de Pétri :
     </p>
@@ -299,6 +301,7 @@
 
     <u><h2>Statechart</h2></u>
     <p>
+        <a href="Microwave/model/microwave.sct" alt="Statechart">Statechart</a>
         <img src="images/statechart.png" alt="Statechart">
         <br>
         Voici quelques hypothèses et notre raisonnement derrière notre Statechart :
@@ -314,10 +317,9 @@
     <!--Diagramme de classe-->
     <h3>Voici quelques hypothèses et notre raisonnement derrière notre <u></u>diagramme de classe :</h3>
       <ul>
-        <li>Nous avons décidé d'omettre les getters et les setters afin de garder notre diagrame clair.</li>
-        <li>Nous avons décidé d'omettre les classes Service et Database afin de garder notre diagramme simple.</li>
-        <li>Nous avons décidé de garde notre Controller simple. Ideallement, il serait separe en deux.</li>
-        <li>Nous avons décidé de separer View en Client et Admin puisque c'est plus simple que gerer des permissions.</li>
+        <li>On reutilise TravelClass pour les classes de sections au lieu davoir 1 classe pour chaque.</li>
+        <li>Client et Admin reutilise la classe utilisateur.</li>
+        <li>On reutilise le pattern MVC pour diminuer les dependences et separer la logique de la presentation.</li>
       </ul>
       <a href="vpp/ClassDiagram.vpp">Lien vers le diagramme de classe</a>
       <img src="images/ClassDiagram.jpg" alt="Diagramme de classe" width="900" height="800"/>
@@ -373,11 +375,6 @@
             Ceci est efficace pour des systèmes simples, mais il faut faire attention pour que les dépendances ne deviennent pas trop fortes à mesure que le système se développe. </li>
     </ul>
     
-    <h3>Discussion du fardeau des classes :</h3>
-    <ul>
-        <li>xx</li>
-        <li>xx</li>
-    </ul>
     <p>
         <h3>Observations derrière notre graphe IA :</h3>
         <img src="images/IAGraph.png" alt="Graphe IA">
@@ -392,8 +389,10 @@
    
     <h3>Justification de l'applicatin des principes de conception :</h3>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Le principe de séparation des responsabilités (SRP) est bien appliqué puisque chaque classe a une responsabilité clairement définie (ex. : Client, Reservation, CreditCard). 
+            Le découpage en paquets reflète également une organisation en couches (utilisateurs, logique métier, interface, contrôleurs), ce qui suit le principe de séparation des préoccupations. 
+            De plus, l'utilisation de classes abstraites, d'énumérations et de spécialisations hiérarchiques respecte les principes Open/Closed et Liskov Substitution, favorisant l'extensibilité. 
+            Enfin, les contrôleurs jouent le rôle d'intermédiaires entre l'interface et le domaine, illustrant l’application du pattern MVC (Model-View-Controller), ce qui améliore la modularité globale de l’application.</li>
     </ul>
 
 
