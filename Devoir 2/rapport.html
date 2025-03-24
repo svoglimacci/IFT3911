@@ -282,7 +282,7 @@
     </table>
     <u><h2>Réseau de Pétri</h2></u>
     <p>
-        <img src="/Devoir 2/images/reseau de petri.PNG" alt="Réseau de Pétri">
+        <img src="images/reseau de petri.PNG" alt="Réseau de Pétri">
         <br>
         Voici quelques hypothèses et notre raisonnement derrière notre réseau de Pétri :
     </p>
@@ -299,16 +299,15 @@
 
     <u><h2>Statechart</h2></u>
     <p>
-        <img src="" alt="Statechart">
+        <img src="images/statechart.png" alt="Statechart">
         <br>
         Voici quelques hypothèses et notre raisonnement derrière notre Statechart :
     </p>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
-        <li>xx</li>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Nous forçon l'utilisateur à choisir la puissance de cuisson HIGH, puis il a la possibilité de la changer.</li>
+        <li>Nous limitons le temps à 999 (guard) afin de respecter le maximum de 4 chiffres.</li>
+        <li>Nous avons ajouté une variable t représentant le temps en secondes des chiffres entrés.</li>
+        <li>Nous supposons que lorsqu'il 4 chiffres sont entrées, les autres chiffres ne seront pas enregistrés, et le micro-onde attend que l'utilisateur clique sur start.</li>  
     </ul>
 
     <u><h2>Design logiciel</h2></u>
@@ -369,7 +368,9 @@
             Par exemple, les classes Client, Reservation, CreditCard et Transaction sont fortement cohésives, chacune prenant en charge un aspect spécifique du processus de réservation et de paiement. 
             De même, les entités Vehicle, Section et Seating sont bien structurées, et leurs spécialisations (avion, train, croisière) 
             respectent une hiérarchie claire, contribuant à une bonne organisation du domaine métier.</li>
-        <li></li>
+        <li>Le couplage entre les modules est faible, ce qui favorise la flexibilité et la maintenabilité. Les informations sont principalement transmises par des classes en paramètres, 
+            réduisant les dépendances directes. Cependant, la conception se concentre sur un couplage par paquet, ce qui pourrait limiter l'évolutivité si les paquets deviennent trop spécifiques. 
+            Ceci est efficace pour des systèmes simples, mais il faut faire attention pour que les dépendances ne deviennent pas trop fortes à mesure que le système se développe. </li>
     </ul>
     
     <h3>Discussion du fardeau des classes :</h3>
