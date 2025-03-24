@@ -112,19 +112,20 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	private boolean initialized = false;
 	
 	public enum State {
-		microwave_Idle,
-		microwave_CookingProcess,
-		microwave_CookingProcess_CookingStates_Finished,
-		microwave_CookingProcess_CookingStates_Cooking,
-		microwave_CookingProcess_CookingStates_PowerSelection,
-		microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High,
-		microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low,
-		microwave_CookingProcess_CookingStates_TimeSelection,
 		microwave_Waiting,
+		microwave_MicrowaveOperations,
+		microwave_MicrowaveOperations_Operations_Idle,
+		microwave_MicrowaveOperations_Operations_CookingProcess,
+		microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished,
+		microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking,
+		microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection,
+		microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High,
+		microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low,
+		microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection,
 		$NullState$
 	};
 	
-	private State[] historyVector = new State[2];
+	private State[] historyVector = new State[3];
 	private final State[] stateVector = new State[1];
 	
 	private int nextStateIndex;
@@ -160,7 +161,7 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		for (int i = 0; i < 1; i++) {
 			stateVector[i] = State.$NullState$;
 		}
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			historyVector[i] = State.$NullState$;
 		}
 		clearEvents();
@@ -189,26 +190,26 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		clearOutEvents();
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-			case microwave_Idle:
-				microwave_Idle_react(true);
-				break;
-			case microwave_CookingProcess_CookingStates_Finished:
-				microwave_CookingProcess_CookingStates_Finished_react(true);
-				break;
-			case microwave_CookingProcess_CookingStates_Cooking:
-				microwave_CookingProcess_CookingStates_Cooking_react(true);
-				break;
-			case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-				microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_react(true);
-				break;
-			case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-				microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_react(true);
-				break;
-			case microwave_CookingProcess_CookingStates_TimeSelection:
-				microwave_CookingProcess_CookingStates_TimeSelection_react(true);
-				break;
 			case microwave_Waiting:
 				microwave_Waiting_react(true);
+				break;
+			case microwave_MicrowaveOperations_Operations_Idle:
+				microwave_MicrowaveOperations_Operations_Idle_react(true);
+				break;
+			case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+				microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished_react(true);
+				break;
+			case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+				microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking_react(true);
+				break;
+			case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+				microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_react(true);
+				break;
+			case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+				microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_react(true);
+				break;
+			case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+				microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection_react(true);
 				break;
 			default:
 				// $NullState$
@@ -257,26 +258,29 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	public boolean isStateActive(State state) {
 	
 		switch (state) {
-		case microwave_Idle:
-			return stateVector[0] == State.microwave_Idle;
-		case microwave_CookingProcess:
-			return stateVector[0].ordinal() >= State.
-					microwave_CookingProcess.ordinal()&& stateVector[0].ordinal() <= State.microwave_CookingProcess_CookingStates_TimeSelection.ordinal();
-		case microwave_CookingProcess_CookingStates_Finished:
-			return stateVector[0] == State.microwave_CookingProcess_CookingStates_Finished;
-		case microwave_CookingProcess_CookingStates_Cooking:
-			return stateVector[0] == State.microwave_CookingProcess_CookingStates_Cooking;
-		case microwave_CookingProcess_CookingStates_PowerSelection:
-			return stateVector[0].ordinal() >= State.
-					microwave_CookingProcess_CookingStates_PowerSelection.ordinal()&& stateVector[0].ordinal() <= State.microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low.ordinal();
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-			return stateVector[0] == State.microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-			return stateVector[0] == State.microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low;
-		case microwave_CookingProcess_CookingStates_TimeSelection:
-			return stateVector[0] == State.microwave_CookingProcess_CookingStates_TimeSelection;
 		case microwave_Waiting:
 			return stateVector[0] == State.microwave_Waiting;
+		case microwave_MicrowaveOperations:
+			return stateVector[0].ordinal() >= State.
+					microwave_MicrowaveOperations.ordinal()&& stateVector[0].ordinal() <= State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection.ordinal();
+		case microwave_MicrowaveOperations_Operations_Idle:
+			return stateVector[0] == State.microwave_MicrowaveOperations_Operations_Idle;
+		case microwave_MicrowaveOperations_Operations_CookingProcess:
+			return stateVector[0].ordinal() >= State.
+					microwave_MicrowaveOperations_Operations_CookingProcess.ordinal()&& stateVector[0].ordinal() <= State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection.ordinal();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+			return stateVector[0] == State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+			return stateVector[0] == State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection:
+			return stateVector[0].ordinal() >= State.
+					microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection.ordinal()&& stateVector[0].ordinal() <= State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low.ordinal();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			return stateVector[0] == State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			return stateVector[0] == State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+			return stateVector[0] == State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection;
 		default:
 			return false;
 		}
@@ -351,24 +355,31 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		sCInterface.setPower(value);
 	}
 	
+	/* Entry action for state 'Waiting'. */
+	private void entryAction_Microwave_Waiting() {
+		sCInterface.operationCallback.stopCook();
+		
+		sCInterface.operationCallback.display("Waiting");
+	}
+	
 	/* Entry action for state 'Idle'. */
-	private void entryAction_Microwave_Idle() {
+	private void entryAction_Microwave_MicrowaveOperations_Operations_Idle() {
 		sCInterface.operationCallback.clearDisplay();
 	}
 	
 	/* Entry action for state 'Finished'. */
-	private void entryAction_Microwave_CookingProcess_CookingStates_Finished() {
+	private void entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished() {
 		timer.setTimer(this, 0, (5 * 1000), false);
 		
-		sCInterface.operationCallback.display("Finished");
-		
 		sCInterface.operationCallback.stopCook();
+		
+		sCInterface.operationCallback.display("Finished");
 		
 		sCInterface.operationCallback.beepOn();
 	}
 	
 	/* Entry action for state 'Cooking'. */
-	private void entryAction_Microwave_CookingProcess_CookingStates_Cooking() {
+	private void entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking() {
 		timer.setTimer(this, 1, (getT() * 1000), false);
 		
 		timer.setTimer(this, 2, (1 * 1000), false);
@@ -379,104 +390,44 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	}
 	
 	/* Entry action for state 'High'. */
-	private void entryAction_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High() {
+	private void entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High() {
+		sCInterface.operationCallback.display("High");
+		
+		sCInterface.setPower(1);
+		
 		sCInterface.operationCallback.display("High");
 		
 		sCInterface.setPower(1);
 	}
 	
 	/* Entry action for state 'Low'. */
-	private void entryAction_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low() {
+	private void entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low() {
+		sCInterface.operationCallback.display("Low");
+		
+		sCInterface.setPower(2);
+		
 		sCInterface.operationCallback.display("Low");
 		
 		sCInterface.setPower(2);
 	}
 	
 	/* Entry action for state 'TimeSelection'. */
-	private void entryAction_Microwave_CookingProcess_CookingStates_TimeSelection() {
+	private void entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection() {
+		sCInterface.operationCallback.displayTime(getT());
+		
 		sCInterface.operationCallback.displayTime(getT());
 	}
 	
-	/* Entry action for state 'Waiting'. */
-	private void entryAction_Microwave_Waiting() {
-		sCInterface.operationCallback.stopCook();
-		
-		sCInterface.operationCallback.display("Waiting");
-	}
-	
 	/* Exit action for state 'Finished'. */
-	private void exitAction_Microwave_CookingProcess_CookingStates_Finished() {
+	private void exitAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished() {
 		timer.unsetTimer(this, 0);
 	}
 	
 	/* Exit action for state 'Cooking'. */
-	private void exitAction_Microwave_CookingProcess_CookingStates_Cooking() {
+	private void exitAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking() {
 		timer.unsetTimer(this, 1);
 		
 		timer.unsetTimer(this, 2);
-	}
-	
-	/* 'default' enter sequence for state Idle */
-	private void enterSequence_Microwave_Idle_default() {
-		entryAction_Microwave_Idle();
-		nextStateIndex = 0;
-		stateVector[0] = State.microwave_Idle;
-	}
-	
-	/* 'default' enter sequence for state CookingProcess */
-	private void enterSequence_Microwave_CookingProcess_default() {
-		enterSequence_Microwave_CookingProcess_CookingStates_default();
-	}
-	
-	/* 'default' enter sequence for state Finished */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_Finished_default() {
-		entryAction_Microwave_CookingProcess_CookingStates_Finished();
-		nextStateIndex = 0;
-		stateVector[0] = State.microwave_CookingProcess_CookingStates_Finished;
-		
-		historyVector[0] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state Cooking */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_Cooking_default() {
-		entryAction_Microwave_CookingProcess_CookingStates_Cooking();
-		nextStateIndex = 0;
-		stateVector[0] = State.microwave_CookingProcess_CookingStates_Cooking;
-		
-		historyVector[0] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state PowerSelection */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_default() {
-		enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_default();
-		historyVector[0] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state High */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default() {
-		entryAction_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
-		nextStateIndex = 0;
-		stateVector[0] = State.microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High;
-		
-		historyVector[1] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state Low */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_default() {
-		entryAction_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
-		nextStateIndex = 0;
-		stateVector[0] = State.microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low;
-		
-		historyVector[1] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state TimeSelection */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_TimeSelection_default() {
-		entryAction_Microwave_CookingProcess_CookingStates_TimeSelection();
-		nextStateIndex = 0;
-		stateVector[0] = State.microwave_CookingProcess_CookingStates_TimeSelection;
-		
-		historyVector[0] = stateVector[0];
 	}
 	
 	/* 'default' enter sequence for state Waiting */
@@ -486,33 +437,135 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		stateVector[0] = State.microwave_Waiting;
 	}
 	
+	/* 'default' enter sequence for state MicrowaveOperations */
+	private void enterSequence_Microwave_MicrowaveOperations_default() {
+		enterSequence_Microwave_MicrowaveOperations_Operations_default();
+	}
+	
+	/* 'default' enter sequence for state Idle */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_Idle_default() {
+		entryAction_Microwave_MicrowaveOperations_Operations_Idle();
+		nextStateIndex = 0;
+		stateVector[0] = State.microwave_MicrowaveOperations_Operations_Idle;
+		
+		historyVector[0] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state CookingProcess */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_default() {
+		enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_default();
+		historyVector[0] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state Finished */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished_default() {
+		entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished();
+		nextStateIndex = 0;
+		stateVector[0] = State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished;
+		
+		historyVector[1] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state Cooking */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking_default() {
+		entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
+		nextStateIndex = 0;
+		stateVector[0] = State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking;
+		
+		historyVector[1] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state PowerSelection */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_default() {
+		enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_default();
+		historyVector[1] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state High */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default() {
+		entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
+		nextStateIndex = 0;
+		stateVector[0] = State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High;
+		
+		historyVector[2] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state Low */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_default() {
+		entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
+		nextStateIndex = 0;
+		stateVector[0] = State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low;
+		
+		historyVector[2] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state TimeSelection */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection_default() {
+		entryAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection();
+		nextStateIndex = 0;
+		stateVector[0] = State.microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection;
+		
+		historyVector[1] = stateVector[0];
+	}
+	
 	/* 'default' enter sequence for region Microwave */
 	private void enterSequence_Microwave_default() {
 		react_Microwave__entry_Default();
 	}
 	
+	/* 'default' enter sequence for region Operations */
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_default() {
+		react_Microwave_MicrowaveOperations_Operations__entry_Default();
+	}
+	
+	/* deep enterSequence with history in child Operations */
+	private void deepEnterSequence_Microwave_MicrowaveOperations_Operations() {
+		switch (historyVector[0]) {
+		case microwave_MicrowaveOperations_Operations_Idle:
+			enterSequence_Microwave_MicrowaveOperations_Operations_Idle_default();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates();
+			break;
+		default:
+			break;
+		}
+	}
+	
 	/* 'default' enter sequence for region CookingStates */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_default() {
-		react_Microwave_CookingProcess_CookingStates__entry_Default();
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_default() {
+		react_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates__entry_Default();
 	}
 	
 	/* deep enterSequence with history in child CookingStates */
-	private void deepEnterSequence_Microwave_CookingProcess_CookingStates() {
-		switch (historyVector[0]) {
-		case microwave_CookingProcess_CookingStates_Finished:
-			enterSequence_Microwave_CookingProcess_CookingStates_Finished_default();
+	private void deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates() {
+		switch (historyVector[1]) {
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+			enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished_default();
 			break;
-		case microwave_CookingProcess_CookingStates_Cooking:
-			enterSequence_Microwave_CookingProcess_CookingStates_Cooking_default();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+			enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking_default();
 			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-			deepEnterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel();
 			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-			deepEnterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel();
 			break;
-		case microwave_CookingProcess_CookingStates_TimeSelection:
-			enterSequence_Microwave_CookingProcess_CookingStates_TimeSelection_default();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+			enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection_default();
 			break;
 		default:
 			break;
@@ -520,72 +573,22 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	}
 	
 	/* 'default' enter sequence for region PowerLevel */
-	private void enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_default() {
-		react_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel__entry_Default();
+	private void enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_default() {
+		react_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel__entry_Default();
 	}
 	
 	/* deep enterSequence with history in child PowerLevel */
-	private void deepEnterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel() {
-		switch (historyVector[1]) {
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-			enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default();
+	private void deepEnterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel() {
+		switch (historyVector[2]) {
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default();
 			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-			enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_default();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_default();
 			break;
 		default:
 			break;
 		}
-	}
-	
-	/* Default exit sequence for state Idle */
-	private void exitSequence_Microwave_Idle() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state CookingProcess */
-	private void exitSequence_Microwave_CookingProcess() {
-		exitSequence_Microwave_CookingProcess_CookingStates();
-	}
-	
-	/* Default exit sequence for state Finished */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_Finished() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-		
-		exitAction_Microwave_CookingProcess_CookingStates_Finished();
-	}
-	
-	/* Default exit sequence for state Cooking */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_Cooking() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-		
-		exitAction_Microwave_CookingProcess_CookingStates_Cooking();
-	}
-	
-	/* Default exit sequence for state PowerSelection */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection() {
-		exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel();
-	}
-	
-	/* Default exit sequence for state High */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Low */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state TimeSelection */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_TimeSelection() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state Waiting */
@@ -594,29 +597,110 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 		stateVector[0] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state MicrowaveOperations */
+	private void exitSequence_Microwave_MicrowaveOperations() {
+		exitSequence_Microwave_MicrowaveOperations_Operations();
+	}
+	
+	/* Default exit sequence for state Idle */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_Idle() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state CookingProcess */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess() {
+		exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates();
+	}
+	
+	/* Default exit sequence for state Finished */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+		
+		exitAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished();
+	}
+	
+	/* Default exit sequence for state Cooking */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+		
+		exitAction_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
+	}
+	
+	/* Default exit sequence for state PowerSelection */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection() {
+		exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel();
+	}
+	
+	/* Default exit sequence for state High */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Low */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state TimeSelection */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for region Microwave */
 	private void exitSequence_Microwave() {
 		switch (stateVector[0]) {
-		case microwave_Idle:
-			exitSequence_Microwave_Idle();
-			break;
-		case microwave_CookingProcess_CookingStates_Finished:
-			exitSequence_Microwave_CookingProcess_CookingStates_Finished();
-			break;
-		case microwave_CookingProcess_CookingStates_Cooking:
-			exitSequence_Microwave_CookingProcess_CookingStates_Cooking();
-			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-			exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
-			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-			exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
-			break;
-		case microwave_CookingProcess_CookingStates_TimeSelection:
-			exitSequence_Microwave_CookingProcess_CookingStates_TimeSelection();
-			break;
 		case microwave_Waiting:
 			exitSequence_Microwave_Waiting();
+			break;
+		case microwave_MicrowaveOperations_Operations_Idle:
+			exitSequence_Microwave_MicrowaveOperations_Operations_Idle();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/* Default exit sequence for region Operations */
+	private void exitSequence_Microwave_MicrowaveOperations_Operations() {
+		switch (stateVector[0]) {
+		case microwave_MicrowaveOperations_Operations_Idle:
+			exitSequence_Microwave_MicrowaveOperations_Operations_Idle();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
+			break;
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection();
 			break;
 		default:
 			break;
@@ -624,22 +708,22 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	}
 	
 	/* Default exit sequence for region CookingStates */
-	private void exitSequence_Microwave_CookingProcess_CookingStates() {
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates() {
 		switch (stateVector[0]) {
-		case microwave_CookingProcess_CookingStates_Finished:
-			exitSequence_Microwave_CookingProcess_CookingStates_Finished();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished();
 			break;
-		case microwave_CookingProcess_CookingStates_Cooking:
-			exitSequence_Microwave_CookingProcess_CookingStates_Cooking();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
 			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-			exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
 			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-			exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
 			break;
-		case microwave_CookingProcess_CookingStates_TimeSelection:
-			exitSequence_Microwave_CookingProcess_CookingStates_TimeSelection();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection();
 			break;
 		default:
 			break;
@@ -647,13 +731,13 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	}
 	
 	/* Default exit sequence for region PowerLevel */
-	private void exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel() {
+	private void exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel() {
 		switch (stateVector[0]) {
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
-			exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
 			break;
-		case microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
-			exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
+		case microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low:
+			exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
 			break;
 		default:
 			break;
@@ -662,193 +746,36 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 	
 	/* Default react sequence for initial entry  */
 	private void react_Microwave__entry_Default() {
-		enterSequence_Microwave_Idle_default();
+		enterSequence_Microwave_MicrowaveOperations_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel__entry_Default() {
+		enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates__entry_Default() {
+		enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_Microwave_MicrowaveOperations_Operations__entry_Default() {
+		enterSequence_Microwave_MicrowaveOperations_Operations_Idle_default();
 	}
 	
 	/* Default react sequence for deep history entry history */
-	private void react_Microwave_CookingProcess_CookingStates_history() {
+	private void react_Microwave_MicrowaveOperations_Operations_history() {
 		/* Enter the region with deep history */
 		if (historyVector[0] != State.$NullState$) {
-			deepEnterSequence_Microwave_CookingProcess_CookingStates();
+			deepEnterSequence_Microwave_MicrowaveOperations_Operations();
 		} else {
-			enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_default();
+			enterSequence_Microwave_MicrowaveOperations_Operations_Idle_default();
 		}
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel__entry_Default() {
-		enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default();
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_Microwave_CookingProcess_CookingStates__entry_Default() {
-		enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_default();
 	}
 	
 	private boolean react() {
 		return false;
-	}
-	
-	private boolean microwave_Idle_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (react()==false) {
-				if (sCInterface.high) {
-					exitSequence_Microwave_Idle();
-					enterSequence_Microwave_CookingProcess_default();
-				} else {
-					if (sCInterface.open) {
-						exitSequence_Microwave_Idle();
-						sCInterface.operationCallback.openDoor();
-						
-						enterSequence_Microwave_Waiting_default();
-					} else {
-						did_transition = false;
-					}
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (react()==false) {
-				if (sCInterface.open) {
-					exitSequence_Microwave_CookingProcess();
-					sCInterface.operationCallback.openDoor();
-					
-					enterSequence_Microwave_Waiting_default();
-				} else {
-					if (sCInterface.stop) {
-						exitSequence_Microwave_CookingProcess();
-						sCInterface.operationCallback.stopCook();
-						
-						enterSequence_Microwave_Idle_default();
-					} else {
-						did_transition = false;
-					}
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_CookingStates_Finished_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (microwave_CookingProcess_react(try_transition)==false) {
-				if (timeEvents[0]) {
-					exitSequence_Microwave_CookingProcess();
-					sCInterface.operationCallback.beepOff();
-					
-					enterSequence_Microwave_Idle_default();
-				} else {
-					did_transition = false;
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_CookingStates_Cooking_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (microwave_CookingProcess_react(try_transition)==false) {
-				if (timeEvents[1]) {
-					exitSequence_Microwave_CookingProcess_CookingStates_Cooking();
-					enterSequence_Microwave_CookingProcess_CookingStates_Finished_default();
-				} else {
-					if (((timeEvents[2]) && (getT()>0))) {
-						exitSequence_Microwave_CookingProcess_CookingStates_Cooking();
-						setT((t - 1));
-						
-						enterSequence_Microwave_CookingProcess_CookingStates_Cooking_default();
-					} else {
-						did_transition = false;
-					}
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_CookingStates_PowerSelection_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (microwave_CookingProcess_react(try_transition)==false) {
-				if (sCInterface.timer) {
-					exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection();
-					setT(0);
-					
-					enterSequence_Microwave_CookingProcess_CookingStates_TimeSelection_default();
-				} else {
-					did_transition = false;
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (microwave_CookingProcess_CookingStates_PowerSelection_react(try_transition)==false) {
-				if (sCInterface.low) {
-					exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
-					enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_default();
-				} else {
-					did_transition = false;
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (microwave_CookingProcess_CookingStates_PowerSelection_react(try_transition)==false) {
-				if (sCInterface.high) {
-					exitSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
-					enterSequence_Microwave_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default();
-				} else {
-					did_transition = false;
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean microwave_CookingProcess_CookingStates_TimeSelection_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (microwave_CookingProcess_react(try_transition)==false) {
-				if (((sCInterface.digit) && (getT()<=999))) {
-					exitSequence_Microwave_CookingProcess_CookingStates_TimeSelection();
-					setT(((t * 10) + sCInterface.getDigitValue()));
-					
-					enterSequence_Microwave_CookingProcess_CookingStates_TimeSelection_default();
-				} else {
-					if (sCInterface.start) {
-						exitSequence_Microwave_CookingProcess_CookingStates_TimeSelection();
-						enterSequence_Microwave_CookingProcess_CookingStates_Cooking_default();
-					} else {
-						did_transition = false;
-					}
-				}
-			}
-		}
-		return did_transition;
 	}
 	
 	private boolean microwave_Waiting_react(boolean try_transition) {
@@ -860,9 +787,175 @@ public class MicrowaveStatemachine implements IMicrowaveStatemachine {
 					exitSequence_Microwave_Waiting();
 					sCInterface.operationCallback.closeDoor();
 					
-					react_Microwave_CookingProcess_CookingStates_history();
+					react_Microwave_MicrowaveOperations_Operations_history();
 				} else {
 					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (react()==false) {
+				if (sCInterface.open) {
+					exitSequence_Microwave_MicrowaveOperations();
+					sCInterface.operationCallback.openDoor();
+					
+					enterSequence_Microwave_Waiting_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_Idle_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_react(try_transition)==false) {
+				if (sCInterface.high) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_Idle();
+					enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_react(try_transition)==false) {
+				if (sCInterface.stop) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess();
+					sCInterface.operationCallback.stopCook();
+					
+					enterSequence_Microwave_MicrowaveOperations_Operations_Idle_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_Operations_CookingProcess_react(try_transition)==false) {
+				if (timeEvents[0]) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess();
+					sCInterface.operationCallback.beepOff();
+					
+					enterSequence_Microwave_MicrowaveOperations_Operations_Idle_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_Operations_CookingProcess_react(try_transition)==false) {
+				if (timeEvents[1]) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
+					enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Finished_default();
+				} else {
+					if (((timeEvents[2]) && (getT()>0))) {
+						exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking();
+						setT((t - 1));
+						
+						enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking_default();
+					} else {
+						did_transition = false;
+					}
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_Operations_CookingProcess_react(try_transition)==false) {
+				if (sCInterface.timer) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection();
+					setT(0);
+					
+					enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_react(try_transition)==false) {
+				if (sCInterface.low) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High();
+					enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_react(try_transition)==false) {
+				if (sCInterface.high) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_Low();
+					enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_PowerSelection_PowerLevel_High_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (microwave_MicrowaveOperations_Operations_CookingProcess_react(try_transition)==false) {
+				if (((sCInterface.digit) && (getT()<=999))) {
+					exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection();
+					setT(((t * 10) + sCInterface.getDigitValue()));
+					
+					enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection_default();
+				} else {
+					if (sCInterface.start) {
+						exitSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_TimeSelection();
+						enterSequence_Microwave_MicrowaveOperations_Operations_CookingProcess_CookingStates_Cooking_default();
+					} else {
+						did_transition = false;
+					}
 				}
 			}
 		}
