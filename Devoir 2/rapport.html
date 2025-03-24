@@ -289,9 +289,9 @@
         Voici quelques hypothèses et notre raisonnement derrière notre réseau de Pétri :
     </p>
     <ul>
-        <li>Nous avons décidé de mettre un jeton dans la place de 'MTL' afin de représenter la présence d'une voiture a l'entrée de Montréal.</li>
-        <li>Nous avons décidé également de mettre un jeton dans la place de 'Lumière' afin de forcer le fait qu'une seule voiture peut rentrer en tout temps. Ainsi, afin de pouvoir franchir la transition 'Entrée vers R-S', il faut qu'il y ait un jeton de disponible dans la place 'Lumière'.</li>
-        <li>Afin de déterminer s'il y avait présence de famine dans notre réseau, nous avons testé notre réseau a l'aide de PIPE. Nous avons fais rouler 500 fois et 1000 fois notre réseau et il n'y avait pas eu de deadlock aux 2 essais.</li>
+        <li>Nous avons décidé de mettre un jeton dans la place de 'MTL' afin de représenter la présence d'une voiture à l'entrée de Montréal.</li>
+        <li>Nous avons décidé également de mettre un jeton dans la place de 'Lumière' afin contrôler quel tunnel est traversable. Ainsi, pour pouvoir franchir la transition 'Entrée vers R-S', il faut qu'il y ait un jeton de disponible dans la place 'Lumière'.</li>
+        <li>Afin de déterminer s'il y a de la famine dans notre réseau, nous avons testé notre réseau à l'aide de PIPE. Nous avons simulé notre réseau 500 fois et 1000 fois et il n'y avait pas eu de deadlock aux 2 essais.</li>
         <li>Lois de conservations : on observe que la somme des marquages des places reste constante et égale à 2 (P_0 + P_1 + P_2 + P_3 + P_4 = 2). Cette contrainte structurelle empêche simultanément la présence de jetons sur les deux voies d’accès (MTL et R→S), garantissant ainsi qu’une seule voiture peut occuper le tunnel à un instant donné.</li>
         <li>Graphe de couverture : dans les deux cas (MTL a R-S et R-S a MTL), le système revient a un état similaire au départ, permettant un cycle infini de passage dans les deux directions.
             <br>       
