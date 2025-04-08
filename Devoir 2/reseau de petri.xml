@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pnml>
+    <net>
+        <token id="Default" red="0" green="0" blue="0"/>
+        <place id="MTL">
+            <graphics>
+                <position x="465.0" y="398.0"/>
+            </graphics>
+            <name>
+                <value>P0</value>
+                <graphics>
+                    <offset x="-5.0" y="19.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value>Default,1</value>
+            </initialMarking>
+        </place>
+        <place id="Rive-Sud">
+            <graphics>
+                <position x="970.0" y="400.0"/>
+            </graphics>
+            <name>
+                <value>P2</value>
+                <graphics>
+                    <offset x="86.0" y="16.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value></value>
+            </initialMarking>
+        </place>
+        <place id="Lumière">
+            <graphics>
+                <position x="704.0" y="405.0"/>
+            </graphics>
+            <name>
+                <value>P3</value>
+                <graphics>
+                    <offset x="37.0" y="45.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value>Default,1</value>
+            </initialMarking>
+        </place>
+        <place id="Voie R-S">
+            <graphics>
+                <position x="702.0" y="528.0"/>
+            </graphics>
+            <name>
+                <value>P4</value>
+                <graphics>
+                    <offset x="34.0" y="42.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value></value>
+            </initialMarking>
+        </place>
+        <place id="Voie MTL">
+            <graphics>
+                <position x="705.0" y="289.0"/>
+            </graphics>
+            <name>
+                <value>P1</value>
+                <graphics>
+                    <offset x="41.0" y="-9.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value></value>
+            </initialMarking>
+        </place>
+        <transition id="Entrée vers R-S">
+            <graphics>
+                <position x="573.0" y="290.0"/>
+            </graphics>
+            <name>
+                <value>T0</value>
+                <graphics>
+                    <offset x="44.0" y="-7.0"/>
+                </graphics>
+            </name>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <timed>
+                <value>false</value>
+            </timed>
+            <priority>
+                <value>1</value>
+            </priority>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1</value>
+            </rate>
+        </transition>
+        <transition id="Entrée vers MTL">
+            <graphics>
+                <position x="860.0" y="529.0"/>
+            </graphics>
+            <name>
+                <value>T2</value>
+                <graphics>
+                    <offset x="48.0" y="44.0"/>
+                </graphics>
+            </name>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <timed>
+                <value>false</value>
+            </timed>
+            <priority>
+                <value>1</value>
+            </priority>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1</value>
+            </rate>
+        </transition>
+        <transition id="Sortie vers R-S">
+            <graphics>
+                <position x="858.0" y="287.0"/>
+            </graphics>
+            <name>
+                <value>T1</value>
+                <graphics>
+                    <offset x="42.0" y="-6.0"/>
+                </graphics>
+            </name>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <timed>
+                <value>false</value>
+            </timed>
+            <priority>
+                <value>1</value>
+            </priority>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1</value>
+            </rate>
+        </transition>
+        <transition id="Sortie vers MTL">
+            <graphics>
+                <position x="571.0" y="530.0"/>
+            </graphics>
+            <name>
+                <value>T3</value>
+                <graphics>
+                    <offset x="42.0" y="45.0"/>
+                </graphics>
+            </name>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <timed>
+                <value>false</value>
+            </timed>
+            <priority>
+                <value>1</value>
+            </priority>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1</value>
+            </rate>
+        </transition>
+        <arc id="Sortie vers R-S TO Lumière" source="Sortie vers R-S" target="Lumière">
+            <arcpath id="" x="858.0" y="302.0" curvePoint="false"/>
+            <arcpath id="" x="730.0" y="410.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Sortie vers MTL TO Lumière" source="Sortie vers MTL" target="Lumière">
+            <arcpath id="" x="581.0" y="545.0" curvePoint="false"/>
+            <arcpath id="" x="708.0" y="430.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Sortie vers R-S TO Rive-Sud" source="Sortie vers R-S" target="Rive-Sud">
+            <arcpath id="" x="868.0" y="302.0" curvePoint="false"/>
+            <arcpath id="" x="974.0" y="405.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Sortie vers MTL TO MTL" source="Sortie vers MTL" target="MTL">
+            <arcpath id="" x="576.0" y="530.0" curvePoint="false"/>
+            <arcpath id="" x="489.0" y="425.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Entrée vers R-S TO Voie MTL" source="Entrée vers R-S" target="Voie MTL">
+            <arcpath id="" x="583.0" y="305.0" curvePoint="false"/>
+            <arcpath id="" x="705.0" y="304.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Entrée vers MTL TO Voie R-S" source="Entrée vers MTL" target="Voie R-S">
+            <arcpath id="" x="860.0" y="544.0" curvePoint="false"/>
+            <arcpath id="" x="732.0" y="543.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Lumière TO Entrée vers R-S" source="Lumière" target="Entrée vers R-S">
+            <arcpath id="" x="708.0" y="410.0" curvePoint="false"/>
+            <arcpath id="" x="583.0" y="305.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Rive-Sud TO Entrée vers MTL" source="Rive-Sud" target="Entrée vers MTL">
+            <arcpath id="" x="975.0" y="426.0" curvePoint="false"/>
+            <arcpath id="" x="865.0" y="529.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="MTL TO Entrée vers R-S" source="MTL" target="Entrée vers R-S">
+            <arcpath id="" x="490.0" y="402.0" curvePoint="false"/>
+            <arcpath id="" x="578.0" y="320.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Voie R-S TO Sortie vers MTL" source="Voie R-S" target="Sortie vers MTL">
+            <arcpath id="" x="702.0" y="543.0" curvePoint="false"/>
+            <arcpath id="" x="581.0" y="545.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Voie MTL TO Sortie vers R-S" source="Voie MTL" target="Sortie vers R-S">
+            <arcpath id="" x="735.0" y="304.0" curvePoint="false"/>
+            <arcpath id="" x="858.0" y="302.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="Lumière TO Entrée vers MTL" source="Lumière" target="Entrée vers MTL">
+            <arcpath id="" x="730.0" y="430.0" curvePoint="false"/>
+            <arcpath id="" x="860.0" y="544.0" curvePoint="false"/>
+            <type value="normal"/>
+            <inscription>
+                <value>Default,1</value>
+            </inscription>
+        </arc>
+    </net>
+</pnml>

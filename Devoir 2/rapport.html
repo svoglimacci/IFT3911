@@ -282,14 +282,16 @@
     </table>
     <u><h2>Réseau de Pétri</h2></u>
     <p>
-        <img src="/Devoir 2/images/reseau de petri.PNG" alt="Réseau de Pétri">
+        <a href="reseau de petri.xml" alt="Réseau de Pétri">Réseau de Pétri</a>
+        <img src="images/reseau de petri.PNG" alt="Réseau de Pétri">
+        <br>
         <br>
         Voici quelques hypothèses et notre raisonnement derrière notre réseau de Pétri :
     </p>
     <ul>
-        <li>Nous avons décidé de mettre un jeton dans la place de 'MTL' afin de représenter la présence d'une voiture a l'entrée de Montréal.</li>
-        <li>Nous avons décidé également de mettre un jeton dans la place de 'Lumière' afin de forcer le fait qu'une seule voiture peut rentrer en tout temps. Ainsi, afin de pouvoir franchir la transition 'Entrée vers R-S', il faut qu'il y ait un jeton de disponible dans la place 'Lumière'.</li>
-        <li>Afin de déterminer s'il y avait présence de famine dans notre réseau, nous avons testé notre réseau a l'aide de PIPE. Nous avons fais rouler 500 fois et 1000 fois notre réseau et il n'y avait pas eu de deadlock aux 2 essais.</li>
+        <li>Nous avons décidé de mettre un jeton dans la place de 'MTL' afin de représenter la présence d'une voiture à l'entrée de Montréal.</li>
+        <li>Nous avons décidé également de mettre un jeton dans la place de 'Lumière' afin contrôler quel tunnel est traversable. Ainsi, pour pouvoir franchir la transition 'Entrée vers R-S', il faut qu'il y ait un jeton de disponible dans la place 'Lumière'.</li>
+        <li>Afin de déterminer s'il y a de la famine dans notre réseau, nous avons testé notre réseau à l'aide de PIPE. Nous avons simulé notre réseau 500 fois et 1000 fois et il n'y avait pas eu de deadlock aux 2 essais.</li>
         <li>Lois de conservations : on observe que la somme des marquages des places reste constante et égale à 2 (P_0 + P_1 + P_2 + P_3 + P_4 = 2). Cette contrainte structurelle empêche simultanément la présence de jetons sur les deux voies d’accès (MTL et R→S), garantissant ainsi qu’une seule voiture peut occuper le tunnel à un instant donné.</li>
         <li>Graphe de couverture : dans les deux cas (MTL a R-S et R-S a MTL), le système revient a un état similaire au départ, permettant un cycle infini de passage dans les deux directions.
             <br>       
@@ -299,26 +301,25 @@
 
     <u><h2>Statechart</h2></u>
     <p>
-        <img src="" alt="Statechart">
+        <a href="Microwave/model/microwave.sct" alt="Statechart">Statechart</a>
+        <img src="images/statechart.png" alt="Statechart">
         <br>
         Voici quelques hypothèses et notre raisonnement derrière notre Statechart :
     </p>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
-        <li>xx</li>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Nous forçon l'utilisateur à choisir la puissance de cuisson HIGH, puis il a la possibilité de la changer.</li>
+        <li>Nous limitons le temps à 999 (guard) afin de respecter le maximum de 4 chiffres.</li>
+        <li>Nous avons ajouté une variable t représentant le temps en secondes des chiffres entrés.</li>
+        <li>Nous supposons que lorsqu'il 4 chiffres sont entrées, les autres chiffres ne seront pas enregistrés, et le micro-onde attend que l'utilisateur clique sur start.</li>  
     </ul>
 
     <u><h2>Design logiciel</h2></u>
     <!--Diagramme de classe-->
     <h3>Voici quelques hypothèses et notre raisonnement derrière notre <u></u>diagramme de classe :</h3>
       <ul>
-        <li>Nous avons décidé d'omettre les getters et les setters afin de garder notre diagrame clair.</li>
-        <li>Nous avons décidé d'omettre les classes Service et Database afin de garder notre diagramme simple.</li>
-        <li>Nous avons décidé de garde notre Controller simple. Ideallement, il serait separe en deux.</li>
-        <li>Nous avons décidé de separer View en Client et Admin puisque c'est plus simple que gerer des permissions.</li>
+        <li>On reutilise TravelClass pour les classes de sections au lieu davoir 1 classe pour chaque.</li>
+        <li>Client et Admin reutilise la classe utilisateur.</li>
+        <li>On reutilise le pattern MVC pour diminuer les dependences et separer la logique de la presentation.</li>
       </ul>
       <a href="vpp/ClassDiagram.vpp">Lien vers le diagramme de classe</a>
       <img src="images/ClassDiagram.jpg" alt="Diagramme de classe" width="900" height="800"/>
@@ -363,31 +364,47 @@
 
     <u><h2>Qualité du design</h2></u>
 
+    <!--couplage et cohesion-->
     <h3>Discussion du couplage et de la cohésion des modules :</h3>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>L’architecture du système démontre une bonne cohésion au sein des modules. Chaque classe est responsable d’une fonctionnalité précise, ce qui favorise la lisibilité et la maintenabilité du code. 
+            Par exemple, les classes Client, Reservation, CreditCard et Transaction sont fortement cohésives, chacune prenant en charge un aspect spécifique du processus de réservation et de paiement. 
+            De même, les entités Vehicle, Section et Seating sont bien structurées, et leurs spécialisations (avion, train, croisière) 
+            respectent une hiérarchie claire, contribuant à une bonne organisation du domaine métier.</li>
+        <li>Le couplage entre les modules est faible, ce qui favorise la flexibilité et la maintenabilité. Les informations sont principalement transmises par des classes en paramètres, 
+            réduisant les dépendances directes. Cependant, la conception se concentre sur un couplage par paquet, ce qui pourrait limiter l'évolutivité si les paquets deviennent trop spécifiques. 
+            Ceci est efficace pour des systèmes simples, mais il faut faire attention pour que les dépendances ne deviennent pas trop fortes à mesure que le système se développe. </li>
     </ul>
-    
+
+    <!--fardeau-->
     <h3>Discussion du fardeau des classes :</h3>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Les classes AdminController et ClientController regroupent trop de responsabilités, allant de la gestion des paiements à la création d’itinéraires et de comptes.</li>
+        <li>Cela viole le principe de responsabilité unique (SRP) et rend ces classes difficiles à maintenir, tester et faire évoluer.        </li>
     </ul>
+    
+    <!--graphe ia-->
     <p>
-        <img src="" alt="Graphe IA">
-        <br>
-        <h3>Voici quelques hypothèses et notre raisonnement derrière notre graphe IA :</h3>
+        <h3>Observations derrière notre graphe IA :</h3>
+        <img src="images/IAGraph.png" alt="Graphe IA">
     </p>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Les paquets Users et Domain se trouvent du côté gauche du graphe (instabilité ≈ 0), avec un taux d’abstraction modéré (entre 0.22 et 0.33). 
+            Cela indique des modules stables et peu dépendants d'autres paquets, mais également assez concrets. Le paquet Users, en particulier, se situe loin de la Main Sequence (distance ≈ 0.67), 
+            ce qui le place dans une zone à risque, car il est très stable tout en manquant d’abstraction, ce qui peut compliquer son évolution.</li>
+        <li>Les paquets Controllers et View apparaissent en bas à droite du graphe (instabilité = 1, abstraction = 0), ce qui signifie qu’ils sont très instables et totalement concrets. 
+            Bien qu’alignés sur la Main Sequence (distance = 0), leur position indique une forte dépendance à d'autres modules sans protection par des abstractions, ce qui pourrait affecter leur flexibilité à long terme.</li>
+        <li>Les paquets Domain et Reservation se situent près du centre du graphe, autour de (1.0, 0.2), avec une distance raisonnable par rapport à la Main Sequence (≈ 0.2). 
+            Leur position indique un meilleur équilibre entre abstraction et instabilité, ce qui en fait des modules plus flexibles et mieux conçus du point de vue architectural.</li>
     </ul>
    
+    <!--principes de conception-->
     <h3>Justification de l'applicatin des principes de conception :</h3>
     <ul>
-        <li>xx</li>
-        <li>xx</li>
+        <li>Le principe de séparation des responsabilités (SRP) est bien appliqué puisque chaque classe a une responsabilité clairement définie (ex. : Client, Reservation, CreditCard). 
+            Le découpage en paquets reflète également une organisation en couches (utilisateurs, logique métier, interface, contrôleurs), ce qui suit le principe de séparation des préoccupations. 
+            De plus, l'utilisation de classes abstraites, d'énumérations et de spécialisations hiérarchiques respecte les principes Open/Closed et Liskov Substitution, favorisant l'extensibilité. 
+            Enfin, les contrôleurs jouent le rôle d'intermédiaires entre l'interface et le domaine, illustrant l’application du pattern MVC (Model-View-Controller), ce qui améliore la modularité globale de l’application.</li>
     </ul>
 
 
