@@ -37,4 +37,12 @@ public class Seating {
   public Object getState() {
     return state;
   }
+
+  public int getRow() {
+    return rowNum;
+  }
+
+  public char getColumn() {
+    return columnLetter;
+  }
 }

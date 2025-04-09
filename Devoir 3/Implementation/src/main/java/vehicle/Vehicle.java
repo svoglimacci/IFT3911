@@ -1,15 +1,18 @@
 package vehicle;
 
+import company.Company;
 import itinerary.Itinerary;
 import java.util.ArrayList;
+import section.PlaneSection;
 import section.Section;
 import section.TravelClass;
 
-public class Vehicle {
+public abstract class Vehicle {
 
   private String id;
   private ArrayList<Itinerary> itineraries;
   private ArrayList<Section> sections;
+  private Company company;
 
   public Vehicle(String id) {
     this.id = id;
@@ -25,30 +28,29 @@ public class Vehicle {
     this.id = id;
   }
 
-  public Section getSections(TravelClass travelClass) {
+  public ArrayList<Itinerary> getItineraries() {
+    return itineraries;
+  }
+
+
+  public Section getSection(TravelClass travelClass) {
     for (Section section : sections) {
-      if (section.getTravelClass().equals(travelClass)) {
+      if (section.getTravelClass() == travelClass) {
         return section;
       }
     }
     return null;
   }
 
-  public boolean deleteSection(Section section) {
-    if (sections.contains(section)) {
-      sections.remove(section);
-      return true;
-    }
-    return false;
+  public Company getCompany() {
+    return company;
   }
 
-  public boolean addSection(Section section) {
-    if (section != null) {
-      sections.add(section);
-      return true;
-    }
-    return false;
+  public void addSection(Section section) {
+    sections.add(section);
   }
 
-
+  public ArrayList<Section> getSections() {
+    return sections;
+  }
 }

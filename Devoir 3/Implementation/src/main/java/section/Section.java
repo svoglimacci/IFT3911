@@ -2,13 +2,23 @@ package section;
 
 import java.util.ArrayList;
 import seating.Available;
+import seating.PlaneSeat;
 import seating.Seating;
 
-public class Section {
+public abstract class Section {
 
   private TravelClass travelClass;
   private Layout layout;
+
+  private int nbSeats;
   private ArrayList<Seating> seatings;
+
+  public Section(TravelClass travelClass, Layout layout, int nbSeats) {
+    this.travelClass = travelClass;
+    this.layout = layout;
+    this.nbSeats = nbSeats;
+    this.seatings = new ArrayList<>();
+  }
 
   public double getRate() {
     return travelClass.getRate();
@@ -34,9 +44,7 @@ public class Section {
     return false;
   }
 
-  public ArrayList<Seating> getSeating() {
-    return seatings;
-  }
+
 
   public ArrayList<Seating> getAvailableSeats() {
     ArrayList<Seating> availableSeats = new ArrayList<>();
@@ -47,4 +55,12 @@ public class Section {
     }
     return availableSeats;
   }
+
+  public Layout getLayout() {
+    return layout;
+  }
+
+  public abstract ArrayList<PlaneSeat> getSeatings();
+
+
 }

@@ -2,6 +2,10 @@ package section;
 
 public class TravelClass {
 
+  public static final TravelClass PREMIERE_ETROITE = new TravelClass("PS", "Première étroite", 1.0);
+  public static final TravelClass AFFAIRE_MOYENNE = new TravelClass("AM", "Affaire moyenne", 0.75);
+  public static final TravelClass ECONOMIE_LARGE = new TravelClass("EL", "Économie large", 0.5);
+
   private String id;
   private String name;
   private double rate;
@@ -36,4 +40,8 @@ public class TravelClass {
     this.rate = rate;
   }
 
+  @Override
+  public String toString() {
+    return id;
+  }
 }

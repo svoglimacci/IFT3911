@@ -10,7 +10,6 @@ public class DeleteCompanyCommand implements ICommand {
 
   public DeleteCompanyCommand(String id, Repository repository) {
     this.id = id;
-
     this.repository = repository;
   }
 

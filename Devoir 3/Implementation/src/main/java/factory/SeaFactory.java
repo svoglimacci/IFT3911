@@ -3,6 +3,8 @@ package factory;
 import company.Company;
 import hub.Hub;
 import itinerary.Itinerary;
+import java.util.ArrayList;
+import java.util.Calendar;
 import section.Section;
 import vehicle.Vehicle;
 
@@ -15,7 +17,7 @@ public class SeaFactory extends TravelFactory {
   }
 
   @Override
-  public Itinerary createItinerary() {
+  public Itinerary createItinerary(String id, ArrayList<Hub> hubs, Calendar departureDate, Calendar arrivalDate, int price, Company company,  Vehicle vehicle) {
     return null;
   }
 
@@ -30,7 +32,7 @@ public class SeaFactory extends TravelFactory {
   }
 
   @Override
-  public Hub createHub() {
+  public Hub createHub(String id, String city) {
     return null;
   }
 

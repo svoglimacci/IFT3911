@@ -6,6 +6,8 @@ import hub.Airport;
 import hub.Hub;
 import itinerary.Flight;
 import itinerary.Itinerary;
+import java.util.ArrayList;
+import java.util.Calendar;
 import section.PlaneSection;
 import section.Section;
 import vehicle.Airplane;
@@ -15,13 +17,17 @@ public class AirFactory extends TravelFactory {
 
   private static final AirFactory instance = new AirFactory();
 
+
   public AirFactory() {
     super();
   }
 
   @Override
-  public Flight createItinerary() {
-    return null;
+  public Flight createItinerary(String id, ArrayList<Hub> hubs, Calendar departureDate, Calendar arrivalDate, int price, Company company, Vehicle vehicle) {
+
+    return new Flight(id, price, departureDate, arrivalDate, false, hubs, company,
+        (Airplane) vehicle);
+
   }
 
 
@@ -37,8 +43,8 @@ public class AirFactory extends TravelFactory {
   }
 
   @Override
-  public Airport createHub() {
-    return null;
+  public Airport createHub(String id, String city) {
+    return new Airport(id, city);
   }
 
   @Override

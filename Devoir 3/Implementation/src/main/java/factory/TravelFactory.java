@@ -2,7 +2,11 @@ package factory;
 
 
 import command.TravelType;
+import company.Airline;
 import company.Company;
+import hub.Airport;
+import java.util.ArrayList;
+import java.util.Calendar;
 import section.Section;
 import vehicle.Vehicle;
 import hub.Hub;
@@ -22,13 +26,13 @@ public abstract class TravelFactory {
     };
   }
 
-  public abstract Itinerary createItinerary();
+  public abstract Itinerary createItinerary(String id, ArrayList<Hub> hubs, Calendar departureDate, Calendar arrivalDate, int price, Company company, Vehicle vehicle);
 
   public abstract Company createCompany(String id);
 
   public abstract Vehicle createVehicle();
 
-  public abstract Hub createHub();
+  public abstract Hub createHub(String id, String city);
 
   public abstract Section createSection();
 
