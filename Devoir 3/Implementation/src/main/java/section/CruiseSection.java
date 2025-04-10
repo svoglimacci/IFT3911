@@ -1,7 +1,7 @@
 package section;
 
 import java.util.ArrayList;
-import seating.PlaneSeat;
+import seating.Seating;
 
 public class CruiseSection extends Section {
 
@@ -10,7 +10,7 @@ public class CruiseSection extends Section {
   }
 
   @Override
-  public ArrayList<PlaneSeat> getSeatings() {
+  public ArrayList<Seating> getSeatings() {
     return null;
   }
 

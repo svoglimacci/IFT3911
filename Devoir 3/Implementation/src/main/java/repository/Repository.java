@@ -168,11 +168,10 @@ public class Repository {
     }
   }
 
-  public void addVehicle(Airplane airplane, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
-      vehicles.add(airplane);
+  public void addVehicle(Vehicle vehicle) {
+      vehicles.add(vehicle);
       notifyObservers();
-    }
+
   }
 
   public void createSection(String vehicleId, String travelClassId, Layout layout, int nbSeats,

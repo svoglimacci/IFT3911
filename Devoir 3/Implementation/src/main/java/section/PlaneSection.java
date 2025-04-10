@@ -7,7 +7,7 @@ import seating.Seating;
 
 public class PlaneSection extends Section {
 
-  private ArrayList<PlaneSeat> seatings;
+  private ArrayList<Seating> seatings;
 
 
 
@@ -17,7 +17,7 @@ public class PlaneSection extends Section {
     this.seatings = createSeating(layout, nbSeats);
 
   }
-  private ArrayList<PlaneSeat> createSeating(Layout layout, int nbSeats) {
+  private ArrayList<Seating> createSeating(Layout layout, int nbSeats) {
     seatings = new ArrayList<>();
     int rows;
     int cols;
@@ -42,8 +42,8 @@ public class PlaneSection extends Section {
     return seatings;
   }
 
-  @Override
-  public ArrayList<PlaneSeat> getSeatings() {
+
+  public ArrayList<Seating> getSeatings() {
     return seatings;
   }
 

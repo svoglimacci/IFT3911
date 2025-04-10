@@ -25,7 +25,7 @@ public class AdminTripVisitor implements IVisitor{
     sb.append(":[").append(itinerary.getCompany().getId()).append("]");
 
     // AC481
-    sb.append(itinerary.getId());
+    sb.append(itinerary.getVehicle().getId());
 
     // (2014.11.28:06.00-2014.11.28:07:24)
     String departureDate = itinerary.getDepartureDate().get(Calendar.YEAR) + "." + (itinerary.getDepartureDate()

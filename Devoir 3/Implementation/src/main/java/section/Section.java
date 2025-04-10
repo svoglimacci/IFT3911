@@ -60,7 +60,9 @@ public abstract class Section {
     return layout;
   }
 
-  public abstract ArrayList<PlaneSeat> getSeatings();
+  public ArrayList<Seating> getSeatings() {
+    return seatings;
+  }
 
 
 }
