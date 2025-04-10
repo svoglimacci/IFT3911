@@ -1,5 +1,6 @@
 package controller;
 
+import command.AssignPricesCommand;
 import command.CreateCompanyCommand;
 import command.CreateHubCommand;
 import command.CreateItineraryCommand;
@@ -108,5 +109,11 @@ public class AdminController {
 
   public ArrayList<Itinerary> displayItineraries(TravelType travelType) {
     return repository.getItineraries(travelType);
+  }
+
+  public boolean assignPrices(String itineraryId, int price, TravelType travelType) {
+    AssignPricesCommand assignPricesCommand = new AssignPricesCommand(itineraryId, price, travelType, repository);
+    invoker.executeCommand(assignPricesCommand);
+    return true;
   }
 }

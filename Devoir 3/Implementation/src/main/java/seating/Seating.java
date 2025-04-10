@@ -20,7 +20,7 @@ public class Seating {
   public boolean assignSeat(Client client) {
     if (state instanceof Available) {
       this.client = client;
-      state = new Reserved(this);
+      state = new Confirmed(this);
       return true;
     }
     return false;
@@ -44,5 +44,14 @@ public class Seating {
 
   public char getColumn() {
     return columnLetter;
+  }
+
+
+  public void setState(Reserved reserved) {
+    this.state = reserved;
+  }
+
+  public String getId() {
+    return String.format("%d%c", rowNum, columnLetter);
   }
 }

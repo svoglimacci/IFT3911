@@ -1,9 +1,11 @@
 package controller;
 
 import command.Invoker;
+import command.TravelType;
+import itinerary.Itinerary;
 import java.util.ArrayList;
-import itinerary.Flight;
 import repository.Repository;
+import user.Client;
 
 public class ClientController {
 
@@ -22,4 +24,16 @@ public class ClientController {
   }
 
 
+  public ArrayList<Itinerary> displayItineraries(TravelType travelType) {
+    return repository.getItineraries(travelType);
+  }
+
+
+  public boolean reserveSeat(Client client, String itineraryId, String travelClass, TravelType travelType, boolean isWindowSeat) {
+    return repository.reserveSeat(client, itineraryId, travelClass, travelType, isWindowSeat);
+  }
+
+  public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport, String ccNumber) {
+    return repository.paySeat(client, reservationNumber, name, email, passport, ccNumber);
+  }
 }

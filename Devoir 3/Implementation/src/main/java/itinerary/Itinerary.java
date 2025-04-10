@@ -4,6 +4,7 @@ import company.Company;
 import hub.Hub;
 import java.util.ArrayList;
 import java.util.Calendar;
+import reservation.Reservation;
 import vehicle.Vehicle;
 import visitor.IVisitable;
 import visitor.IVisitor;
@@ -17,6 +18,7 @@ public class Itinerary implements IVisitable {
   private Calendar arrivalDate;
   private boolean isAvailable;
   private ArrayList<Hub> hubs;
+  private ArrayList<Reservation> reservations = new ArrayList<>();
   private Company company;
 
   private Vehicle vehicle;
@@ -100,5 +102,14 @@ public class Itinerary implements IVisitable {
 
   public Vehicle getVehicle() {
     return vehicle;
+  }
+
+  public Reservation getReservation(int id) {
+    for (Reservation reservation : reservations) {
+      if (reservation.getReservationNumber() == id) {
+        return reservation;
+      }
+    }
+    return null;
   }
 }

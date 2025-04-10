@@ -15,5 +15,9 @@ public abstract class SeatingState {
 
   public void reserve() {
 
+    // set state to Reserved
+seating.setState(new Reserved(seating));
+
+
   }
 }

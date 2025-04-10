@@ -8,10 +8,17 @@ import itinerary.Flight;
 import itinerary.Itinerary;
 import java.util.ArrayList;
 import java.util.Calendar;
+import reservation.CreditCard;
+import reservation.Payment;
+import reservation.Reservation;
+import reservation.Transaction;
+import seating.PlaneSeat;
+import seating.Seating;
 import section.Layout;
 import section.PlaneSection;
 import section.Section;
 import section.TravelClass;
+import user.Client;
 import vehicle.Airplane;
 import vehicle.Vehicle;
 import view.IObserver;
@@ -108,11 +115,11 @@ public class Repository {
   }
 
   public Company getCompany(String companyId) {
-      for (Company company : companies) {
-        if (company.getId().equals(companyId)) {
-          return company;
-        }
+    for (Company company : companies) {
+      if (company.getId().equals(companyId)) {
+        return company;
       }
+    }
     return null;
   }
 
@@ -123,7 +130,8 @@ public class Repository {
     }
   }
 
-  public void updateItinerary(String id, String newId, String newCompanyId, String[] newHubsId, Calendar newDepartureDate, Calendar newArrivalDate, int newPrice) {
+  public void updateItinerary(String id, String newId, String newCompanyId, String[] newHubsId,
+      Calendar newDepartureDate, Calendar newArrivalDate, int newPrice) {
 
     Company newCompany = getCompany(newCompanyId);
 
@@ -135,7 +143,6 @@ public class Repository {
         newHubs.add(hub);
       }
     }
-
 
     for (Itinerary itinerary : itineraries) {
       if (itinerary.getId().equals(id)) {
@@ -168,7 +175,8 @@ public class Repository {
     }
   }
 
-  public void createSection(String vehicleId, String travelClassId, Layout layout, int nbSeats, TravelType travelType) {
+  public void createSection(String vehicleId, String travelClassId, Layout layout, int nbSeats,
+      TravelType travelType) {
     TravelClass travelClass = getTravelClass(travelClassId);
 
     for (Vehicle vehicle : vehicles) {
@@ -217,5 +225,72 @@ public class Repository {
       }
     }
     return null;
+  }
+
+  public void assignPrice(String id, int price, TravelType travelType) {
+    for (Itinerary itinerary : itineraries) {
+      if (itinerary.getId().equals(id)) {
+        itinerary.setPrice(price);
+        notifyObservers();
+        return;
+      }
+    }
+  }
+
+  public boolean reserveSeat(Client client, String itineraryId, String travelClass, TravelType travelType, boolean isWindowSeat) {
+    switch (travelType) {
+      case AIR -> {
+        for (Itinerary itinerary : itineraries) {
+          if (itinerary.getId().equals(itineraryId)) {
+            Vehicle vehicle = itinerary.getVehicle();
+            if (vehicle == null) {
+              System.out.println("Vehicle not found for the itinerary.");
+              return false;
+            }
+
+            Section section = vehicle.getSection(travelClass);
+            if (section == null) {
+              System.out.println("Section not found for the travel class.");
+              return false;
+            }
+            ArrayList<Seating> availableSeats = section.getAvailableSeats();
+            for (Seating seating : availableSeats) {
+              if (seating instanceof PlaneSeat planeSeat && planeSeat.isWindowSeat() == isWindowSeat) {
+                seating.reserve();
+                client.makeReservation(seating, itinerary, client);
+                notifyObservers();
+
+                return true;
+              }
+            }
+            break;
+          }
+        }
+        return false;
+      }
+    }
+    return false;
+  }
+
+  public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport, String ccNumber) {
+    Reservation reservation = client.getReservation(reservationNumber);
+    CreditCard creditCard = client.getCreditCard(ccNumber);
+    int price = reservation.getItinerary().getPrice();
+    Payment payment = new Payment(price, reservation, creditCard);
+    if (payment.validate()) {
+      reservation.setPayment(payment);
+
+      // set seating state to confirmed
+      Seating seating = reservation.getSeating();
+      seating.assignSeat(client);
+      System.out.println("Payment successful for reservation number: " + reservation.getReservationNumber() + " with seating: " + seating.getId() + " for client: " + client.getUsername() + "."
+          + "\nPayment details: \nName: " + name + "\nEmail: " + email + "\nPassport: " + passport + "\nCredit Card Number: " + ccNumber);
+
+      notifyObservers();
+      return true;
+    } else {
+      System.out.println("Payment failed");
+      return false;
+    }
   }
 }

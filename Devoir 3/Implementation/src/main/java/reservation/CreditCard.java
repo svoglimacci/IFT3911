@@ -22,5 +22,7 @@ public class CreditCard {
   }
 
 
-
+  public Object getCcNumber() {
+    return number;
+  }
 }

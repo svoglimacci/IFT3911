@@ -33,9 +33,9 @@ public abstract class Vehicle {
   }
 
 
-  public Section getSection(TravelClass travelClass) {
+  public Section getSection(String travelClass) {
     for (Section section : sections) {
-      if (section.getTravelClass() == travelClass) {
+      if (section.getTravelClass().getId().equals(travelClass)) {
         return section;
       }
     }

@@ -130,6 +130,16 @@ public class AdminView implements IObserver {
     for (Itinerary itinerary : itineraries) {
       itinerary.accept(adminTripVisitor);
     }
+  }
 
+  public void handleAssignPrices(String itineraryId, int price, TravelType travelType) {
+
+    boolean res = controller.assignPrices(itineraryId, price, travelType);
+
+    if (res) {
+      System.out.println("Price assigned successfully");
+    } else {
+      System.out.println("Failed to assign price");
+    }
   }
 }
