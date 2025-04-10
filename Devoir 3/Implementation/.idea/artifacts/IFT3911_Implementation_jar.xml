@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="IFT3911_Implementation:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/IFT3911_Implementation_jar</output-path>
+    <root id="archive" name="IFT3911_Implementation.jar">
+      <element id="module-output" name="IFT3911_Implementation" />
+    </root>
+  </artifact>
+</component>
