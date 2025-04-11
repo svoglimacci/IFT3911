@@ -20,7 +20,7 @@ public class ClientController {
 
 
   public void undo() {
-    invoker.undoLast();
+    invoker.undo();
   }
 
 
@@ -33,7 +33,7 @@ public class ClientController {
     return repository.reserveSeat(client, itineraryId, travelClass, travelType, isWindowSeat);
   }
 
-  public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport, String ccNumber) {
-    return repository.paySeat(client, reservationNumber, name, email, passport, ccNumber);
+  public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport) {
+    return repository.paySeat(client, reservationNumber, name, email, passport);
   }
 }

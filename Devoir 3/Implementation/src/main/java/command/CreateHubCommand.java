@@ -26,4 +26,9 @@ public class CreateHubCommand  implements ICommand {
        }
     }
 
+@Override
+  public void undo() {
+      repository.deleteHub(id);
+}
+
 }

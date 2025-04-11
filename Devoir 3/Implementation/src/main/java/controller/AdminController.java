@@ -6,6 +6,7 @@ import command.CreateHubCommand;
 import command.CreateItineraryCommand;
 import command.CreateSectionCommand;
 import command.DeleteCompanyCommand;
+import command.DeleteHubCommand;
 import command.DeleteItineraryCommand;
 import command.EditCompanyCommand;
 import command.EditHubCommand;
@@ -28,9 +29,10 @@ public class AdminController {
     this.invoker = new Invoker();
   }
 
-  public void undo() {
-    invoker.undoLast();
+  public boolean undo() {
+    return invoker.undo();
   }
+
 
 
   public boolean createCompany(String id, TravelType travelType) {
@@ -72,8 +74,8 @@ public class AdminController {
   }
 
   public boolean deleteHub(String id) {
-    DeleteCompanyCommand deleteCompanyCommand = new DeleteCompanyCommand(id, repository);
-    invoker.executeCommand(deleteCompanyCommand);
+    DeleteHubCommand deleteHubCommand = new DeleteHubCommand(id, repository);
+    invoker.executeCommand(deleteHubCommand);
     return true;
   }
 
@@ -116,4 +118,13 @@ public class AdminController {
     invoker.executeCommand(assignPricesCommand);
     return true;
   }
+
+  public void save() {
+    invoker.save(repository);
+  }
+
+  public void restore() {
+    invoker.restore(repository);
+  }
+
 }

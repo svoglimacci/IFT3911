@@ -25,7 +25,11 @@ public class CreateSectionCommand implements ICommand {
   @Override
   public void execute() {
     repository.createSection(vehicleId, travelClass, layout, nbSeats, travelType);
+  }
 
+    @Override
+  public void undo() {
+    repository.deleteSection(vehicleId, travelClass, travelType);
   }
 
 

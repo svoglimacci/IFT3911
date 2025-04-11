@@ -43,7 +43,7 @@ public class CreateItineraryCommand implements ICommand {
 
       // get hubs from repo
       for (String hubId : this.hubs) {
-        Hub hub = repository.getHub(hubId, travelType);
+        Hub hub = repository.getHub(hubId);
         if (hub != null) {
           hubs.add(hub);
         }
@@ -59,5 +59,10 @@ public class CreateItineraryCommand implements ICommand {
       Flight flight = airFactory.createItinerary(id, hubs, departureDate, arrivalDate, price, company, vehicle);
       repository.addItinerary(flight, travelType);
     }
+  }
+
+  @Override
+  public void undo() {
+    repository.deleteItinerary(id);
   }
 }

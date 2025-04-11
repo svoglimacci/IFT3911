@@ -39,8 +39,8 @@ public class ClientView implements IObserver {
     }
   }
 
-  public void handlePaySeat(Client client, int reservationNumber, String name, String email, String passport, String ccNumber) {
-    boolean res = controller.paySeat(client, reservationNumber, name, email, passport, ccNumber);
+  public void handlePaySeat(Client client, int reservationNumber, String name, String email, String passport) {
+    boolean res = controller.paySeat(client, reservationNumber, name, email, passport);
     if (res) {
       System.out.println("Payment successful");
     } else {

@@ -142,4 +142,21 @@ public class AdminView implements IObserver {
       System.out.println("Failed to assign price");
     }
   }
+
+  public void handleUndo() {
+        if (controller.undo()) {
+            System.out.println("Undo successful.");
+        } else {
+            System.out.println("Nothing to undo.");
+        }
+    }
+
+    public void backup() {
+        controller.save();
+    }
+
+    public void restore() {
+        controller.restore();
+    }
+
 }

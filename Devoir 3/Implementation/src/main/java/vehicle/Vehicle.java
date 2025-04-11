@@ -53,4 +53,8 @@ public abstract class Vehicle {
   public ArrayList<Section> getSections() {
     return sections;
   }
+
+  public void removeSection(Section section) {
+    sections.remove(section);
+  }
 }

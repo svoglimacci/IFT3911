@@ -8,6 +8,8 @@ public class EditCompanyCommand implements ICommand {
   private String newId;
   private Repository repository;
 
+  private String oldId;
+
   public EditCompanyCommand(String id, String newId, Repository repository) {
     this.id = id;
     this.newId = newId;
@@ -16,7 +18,16 @@ public class EditCompanyCommand implements ICommand {
 
   @Override
   public void execute() {
+    this.oldId = this.id;
       repository.editCompany(id, newId);
+
+  }
+
+  @Override
+  public void undo() {
+       if (oldId != null) {
+           repository.editCompany(newId, oldId);
+       }
 
   }
 }

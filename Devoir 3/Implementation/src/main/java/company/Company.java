@@ -1,5 +1,6 @@
 package company;
 
+import command.TravelType;
 import itinerary.Itinerary;
 import java.util.ArrayList;
 import vehicle.Vehicle;
@@ -22,4 +23,7 @@ public class Company {
   }
 
 
+  public TravelType getTravelType() {
+    return null;
+  }
 }

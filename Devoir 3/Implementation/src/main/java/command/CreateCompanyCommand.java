@@ -7,7 +7,6 @@ import repository.Repository;
 public class CreateCompanyCommand implements ICommand {
    private String id;
   private TravelType travelType;
-
   private Repository repository;
 
   public CreateCompanyCommand(String id, TravelType travelType, Repository repository) {
@@ -15,6 +14,7 @@ public class CreateCompanyCommand implements ICommand {
     this.travelType = travelType;
     this.repository = repository;
   }
+
 
   @Override
   public void execute() {
@@ -24,6 +24,10 @@ public class CreateCompanyCommand implements ICommand {
       Airline airline = airFactory.createCompany(id);
       repository.addCompany(airline, travelType);
     }
+  }
 
+  @Override
+  public void undo() {
+      repository.deleteCompany(id);
   }
 }

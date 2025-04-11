@@ -1,11 +1,14 @@
 package command;
 
+import itinerary.Itinerary;
 import repository.Repository;
 
 public class AssignPricesCommand implements ICommand{
 
   private String id;
   private int price;
+
+  private int oldPrice;
 
   private TravelType travelType;
   private Repository repository;
@@ -19,7 +22,14 @@ public class AssignPricesCommand implements ICommand{
 
   @Override
   public void execute() {
-    repository.assignPrice(id, price, travelType);
+    this.oldPrice = repository.getItinerary(id).getPrice();
+    repository.assignPrice(id, price);
+  }
+
+  @Override
+  public void undo() {
+    repository.assignPrice(id, oldPrice);
+
   }
 
 }

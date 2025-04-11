@@ -86,6 +86,7 @@ public class Main {
     boolean adminRunning = true;
     while (adminRunning) {
       System.out.println("\nAdmin commands:");
+
       System.out.println("1. Create Company");
       System.out.println("2. Create Hub");
       System.out.println("3. Create Itinerary");
@@ -98,7 +99,10 @@ public class Main {
       System.out.println("10. Delete Hub");
       System.out.println("11. Delete Itinerary");
       System.out.println("12. Display Itineraries");
-      System.out.println("13. Back to main menu");
+      System.out.println("13. undo last command");
+      System.out.println("14. restore last state");
+      System.out.println("15. backup current state");
+      System.out.println("16. Back to main menu");
 
       System.out.print("\nEnter command number: ");
       String command = scanner.nextLine();
@@ -194,7 +198,10 @@ public class Main {
           adminView.handleDeleteItinerary(delItinId);
         }
         case "12" -> adminView.handleDisplayItineraries(TravelType.AIR);
-        case "13" -> adminRunning = false;
+        case "13" -> adminView.handleUndo();
+        case "14" -> adminView.restore();
+        case "15" -> adminView.backup();
+        case "16" -> adminRunning = false;
         default -> System.out.println("Invalid command number.");
       }
     }
@@ -232,9 +239,7 @@ public class Main {
           String email = scanner.nextLine();
           System.out.print("Enter passport: ");
           String passport = scanner.nextLine();
-          System.out.print("Enter credit card number: ");
-          String ccNumber = scanner.nextLine();
-          clientView.handlePaySeat(client, reservationNumber, name, email, passport, ccNumber);
+          clientView.handlePaySeat(client, reservationNumber, name, email, passport);
         }
         case "4" -> clientRunning = false;
         default -> System.out.println("Invalid command number.");

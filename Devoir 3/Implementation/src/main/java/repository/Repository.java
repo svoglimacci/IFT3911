@@ -9,6 +9,8 @@ import itinerary.Itinerary;
 import java.util.ArrayList;
 import java.util.Calendar;
 import reservation.CreditCard;
+import reservation.PayByCreditCard;
+import reservation.PayStrategy;
 import reservation.Payment;
 import reservation.Reservation;
 import reservation.Transaction;
@@ -45,6 +47,19 @@ public class Repository {
     for (IObserver obs : observers) {
       obs.update();
     }
+  }
+
+  public Memento saveState() {
+    return new Memento(companies, vehicles, itineraries, hubs, travelClasses);
+  }
+
+  public void restoreState(Memento memento) {
+    this.companies = memento.getCompanies();
+    this.vehicles = memento.getVehicles();
+    this.itineraries = memento.getItineraries();
+    this.hubs = memento.getHubs();
+    this.travelClasses = memento.getTravelClasses();
+    notifyObservers();
   }
 
   public void addCompany(Company company, TravelType travelType) {
@@ -103,14 +118,12 @@ public class Repository {
   }
 
 
-  public Hub getHub(String id, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
+  public Hub getHub(String id) {
       for (Hub hub : hubs) {
         if (hub.getId().equals(id)) {
           return hub;
         }
       }
-    }
     return null;
   }
 
@@ -123,9 +136,9 @@ public class Repository {
     return null;
   }
 
-  public void addItinerary(Flight flight, TravelType travelType) {
+  public void addItinerary(Itinerary itinerary, TravelType travelType) {
     if (travelType == TravelType.AIR) {
-      itineraries.add(flight);
+      itineraries.add(itinerary);
       notifyObservers();
     }
   }
@@ -138,7 +151,7 @@ public class Repository {
     ArrayList<Hub> newHubs = new ArrayList<>();
 
     for (String hubId : newHubsId) {
-      Hub hub = getHub(hubId, TravelType.AIR);
+      Hub hub = getHub(hubId);
       if (hub != null) {
         newHubs.add(hub);
       }
@@ -226,7 +239,7 @@ public class Repository {
     return null;
   }
 
-  public void assignPrice(String id, int price, TravelType travelType) {
+  public void assignPrice(String id, int price) {
     for (Itinerary itinerary : itineraries) {
       if (itinerary.getId().equals(id)) {
         itinerary.setPrice(price);
@@ -271,25 +284,53 @@ public class Repository {
     return false;
   }
 
-  public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport, String ccNumber) {
+  public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport) {
     Reservation reservation = client.getReservation(reservationNumber);
-    CreditCard creditCard = client.getCreditCard(ccNumber);
+
+    Payment payment = new Payment();
+    PayStrategy strategy = new PayByCreditCard();
+
     int price = reservation.getItinerary().getPrice();
-    Payment payment = new Payment(price, reservation, creditCard);
-    if (payment.validate()) {
+
+    payment.process(strategy);
+
+
+    if (strategy.pay(price)) {
       reservation.setPayment(payment);
 
       // set seating state to confirmed
       Seating seating = reservation.getSeating();
       seating.assignSeat(client);
       System.out.println("Payment successful for reservation number: " + reservation.getReservationNumber() + " with seating: " + seating.getId() + " for client: " + client.getUsername() + "."
-          + "\nPayment details: \nName: " + name + "\nEmail: " + email + "\nPassport: " + passport + "\nCredit Card Number: " + ccNumber);
+          + "\nPayment details: \nName: " + name + "\nEmail: " + email + "\nPassport: " + passport);
 
       notifyObservers();
       return true;
     } else {
       System.out.println("Payment failed");
       return false;
+    }
+  }
+
+  public Itinerary getItinerary(String id) {
+    for (Itinerary itinerary : itineraries) {
+      if (itinerary.getId().equals(id)) {
+        return itinerary;
+      }
+    }
+    return null;
+  }
+
+  public void deleteSection(String vehicleId, String travelClass, TravelType travelType) {
+    for (Vehicle vehicle : vehicles) {
+      if (vehicle.getId().equals(vehicleId)) {
+        Section section = vehicle.getSection(travelClass);
+        if (section != null) {
+          vehicle.removeSection(section);
+          notifyObservers();
+          return;
+        }
+      }
     }
   }
 }
