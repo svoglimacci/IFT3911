@@ -100,8 +100,14 @@ public class Main {
         Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.SEA);
     view.handleCreateItinerary("DEF-ABC", "CARNIVAL", "CR123", new String[]{"DEF", "ABC"},
         Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.SEA);
+    view.handleCreateItinerary("ABC-DEF", "COSTA", "CR123", new String[]{"ABC", "DEF"},
+        Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.SEA);
 
     view.handleCreateItinerary("GHI-JKL", "VIA", "TC123", new String[]{"GHI", "JKL"},
+        Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.GROUND);
+    view.handleCreateItinerary("JKL-GHI", "VIA", "TC123", new String[]{"JKL", "GHI"},
+        Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.GROUND);
+    view.handleCreateItinerary("GHI-JKL", "AMTRAK", "TC123", new String[]{"GHI", "JKL"},
         Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.GROUND);
 
     view.handleCreateSection("AC481", "F", Layout.NARROW, 12, TravelType.AIR);
