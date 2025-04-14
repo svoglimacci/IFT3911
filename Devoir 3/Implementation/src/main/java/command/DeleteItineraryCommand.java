@@ -26,17 +26,8 @@ public class DeleteItineraryCommand implements ICommand {
     @Override
   public void undo() {
     if (oldItinerary != null) {
-      TravelType travelType;
 
-      if (oldItinerary instanceof Flight) {
-        travelType = TravelType.AIR;
-      } else if (oldItinerary instanceof Cruise) {
-        travelType = TravelType.SEA;
-      } else {
-        travelType = TravelType.GROUND;
-      }
-
-      repository.addItinerary(oldItinerary, travelType);
+      repository.addItinerary(oldItinerary);
     }
   }
 

@@ -4,8 +4,10 @@ package repository;
 import command.TravelType;
 import company.Company;
 import hub.Hub;
+import itinerary.Cruise;
 import itinerary.Flight;
 import itinerary.Itinerary;
+import itinerary.TrainRide;
 import java.util.ArrayList;
 import java.util.Calendar;
 import reservation.CreditCard;
@@ -14,8 +16,10 @@ import reservation.PayStrategy;
 import reservation.Payment;
 import reservation.Reservation;
 import reservation.Transaction;
+import seating.Cabin;
 import seating.PlaneSeat;
 import seating.Seating;
+import seating.TrainSeat;
 import section.Layout;
 import section.PlaneSection;
 import section.Section;
@@ -63,17 +67,17 @@ public class Repository {
   }
 
   public void addCompany(Company company, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
+
       companies.add(company);
       notifyObservers();
-    }
+
   }
 
   public void addHub(Hub hub, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
+
       hubs.add(hub);
       notifyObservers();
-    }
+
   }
 
   public void editCompany(String id, String newId) {
@@ -136,11 +140,11 @@ public class Repository {
     return null;
   }
 
-  public void addItinerary(Itinerary itinerary, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
+  public void addItinerary(Itinerary itinerary) {
       itineraries.add(itinerary);
+
       notifyObservers();
-    }
+
   }
 
   public void updateItinerary(String id, String newId, String newCompanyId, String[] newHubsId,
@@ -187,27 +191,16 @@ public class Repository {
 
   }
 
-  public void createSection(String vehicleId, String travelClassId, Layout layout, int nbSeats,
-      TravelType travelType) {
-    TravelClass travelClass = getTravelClass(travelClassId);
-
+  public void createSection(String vehicleId, Section section) {
     for (Vehicle vehicle : vehicles) {
       if (vehicle.getId().equals(vehicleId)) {
-        switch (travelType) {
-          case AIR:
-            Section section = new PlaneSection(travelClass, layout, nbSeats);
-            vehicle.addSection(section);
-            break;
-          default:
-            break;
-        }
+        vehicle.addSection(section);
         notifyObservers();
-        return;
       }
     }
   }
 
-  private TravelClass getTravelClass(String travelClassId) {
+  public TravelClass getTravelClass(String travelClassId) {
     for (TravelClass travelClass : travelClasses) {
       if (travelClass.getId().equals(travelClassId)) {
         return travelClass;
@@ -224,6 +217,13 @@ public class Repository {
     ArrayList<Itinerary> result = new ArrayList<>();
     for (Itinerary itinerary : itineraries) {
       if (travelType == TravelType.AIR && itinerary instanceof Flight) {
+        result.add(itinerary);
+      }
+      if (travelType == TravelType.GROUND && itinerary instanceof TrainRide) {
+        result.add(itinerary);
+      }
+
+      if (travelType == TravelType.SEA && itinerary instanceof Cruise) {
         result.add(itinerary);
       }
     }
@@ -250,8 +250,6 @@ public class Repository {
   }
 
   public boolean reserveSeat(Client client, String itineraryId, String travelClass, TravelType travelType, boolean isWindowSeat) {
-    switch (travelType) {
-      case AIR -> {
         for (Itinerary itinerary : itineraries) {
           if (itinerary.getId().equals(itineraryId)) {
             Vehicle vehicle = itinerary.getVehicle();
@@ -267,22 +265,27 @@ public class Repository {
             }
             ArrayList<Seating> availableSeats = section.getAvailableSeats();
             for (Seating seating : availableSeats) {
-              if (seating instanceof PlaneSeat planeSeat && planeSeat.isWindowSeat() == isWindowSeat) {
-                seating.reserve();
+             if ((seating instanceof PlaneSeat && ((PlaneSeat) seating).isWindowSeat() == isWindowSeat) ||
+                    (seating instanceof TrainSeat && ((TrainSeat) seating).isWindowSeat() == isWindowSeat)) {
+                    seating.reserve();
                 client.makeReservation(seating, itinerary, client);
                 notifyObservers();
 
                 return true;
               }
+
+             else if (seating instanceof Cabin) {
+               seating.reserve();
+                client.makeReservation(seating, itinerary, client);
+                notifyObservers();
+                return true;
+             }
             }
             break;
           }
         }
         return false;
-      }
-    }
-    return false;
-  }
+    };
 
   public boolean paySeat(Client client, int reservationNumber, String name, String email, String passport) {
     Reservation reservation = client.getReservation(reservationNumber);
@@ -298,7 +301,6 @@ public class Repository {
     if (strategy.pay(price)) {
       reservation.setPayment(payment);
 
-      // set seating state to confirmed
       Seating seating = reservation.getSeating();
       seating.assignSeat(client);
       System.out.println("Payment successful for reservation number: " + reservation.getReservationNumber() + " with seating: " + seating.getId() + " for client: " + client.getUsername() + "."
@@ -333,4 +335,5 @@ public class Repository {
       }
     }
   }
+
 }

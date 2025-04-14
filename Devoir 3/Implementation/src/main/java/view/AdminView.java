@@ -9,6 +9,7 @@ import java.util.Calendar;
 import repository.Repository;
 import controller.AdminController;
 import section.Layout;
+import section.TravelClass;
 import visitor.AdminTripVisitor;
 
 public class AdminView implements IObserver {
@@ -132,9 +133,9 @@ public class AdminView implements IObserver {
     }
   }
 
-  public void handleAssignPrices(String itineraryId, int price, TravelType travelType) {
+  public void handleAssignPrices(String itineraryId, int price) {
 
-    boolean res = controller.assignPrices(itineraryId, price, travelType);
+    boolean res = controller.assignPrices(itineraryId, price);
 
     if (res) {
       System.out.println("Price assigned successfully");

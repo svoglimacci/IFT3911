@@ -10,14 +10,13 @@ public class AssignPricesCommand implements ICommand{
 
   private int oldPrice;
 
-  private TravelType travelType;
   private Repository repository;
 
-  public AssignPricesCommand(String id, int price, TravelType travelType, Repository repository ) {
+  public AssignPricesCommand(String id, int price, Repository repository ) {
     this.id = id;
     this.price = price;
     this.repository = repository;
-    this.travelType = travelType;
+
   }
 
   @Override

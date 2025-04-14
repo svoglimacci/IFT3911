@@ -5,11 +5,11 @@ import company.Company;
 import hub.Airport;
 import hub.Hub;
 import itinerary.Flight;
-import itinerary.Itinerary;
 import java.util.ArrayList;
 import java.util.Calendar;
+import section.Layout;
 import section.PlaneSection;
-import section.Section;
+import section.TravelClass;
 import vehicle.Airplane;
 import vehicle.Vehicle;
 
@@ -38,8 +38,8 @@ public class AirFactory extends TravelFactory {
   }
 
   @Override
-  public Airplane createVehicle() {
-    return null;
+  public Airplane createVehicle(String id) {
+    return new Airplane(id);
   }
 
   @Override
@@ -48,8 +48,8 @@ public class AirFactory extends TravelFactory {
   }
 
   @Override
-  public PlaneSection createSection() {
-    return null;
+  public PlaneSection createSection(TravelClass travelclass, Layout layout, int nbSeats) {
+    return new PlaneSection(travelclass, layout, nbSeats);
   }
 
   public static AirFactory getInstance() {

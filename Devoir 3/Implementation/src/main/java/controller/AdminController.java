@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import repository.Repository;
 import section.Layout;
+import section.TravelClass;
 
 public class AdminController {
 
@@ -36,22 +37,17 @@ public class AdminController {
 
 
   public boolean createCompany(String id, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
       CreateCompanyCommand createCompanyCommand = new CreateCompanyCommand(id, travelType,
           repository);
       invoker.executeCommand(createCompanyCommand);
       return true;
-    }
-    return false;
+
   }
 
   public boolean createHub(String id, String city, TravelType travelType) {
-    if (travelType == TravelType.AIR) {
       CreateHubCommand createHubCommand = new CreateHubCommand(id, city, travelType, repository);
       invoker.executeCommand(createHubCommand);
       return true;
-    }
-    return false;
   }
 
 
@@ -113,8 +109,8 @@ public class AdminController {
     return repository.getItineraries(travelType);
   }
 
-  public boolean assignPrices(String itineraryId, int price, TravelType travelType) {
-    AssignPricesCommand assignPricesCommand = new AssignPricesCommand(itineraryId, price, travelType, repository);
+  public boolean assignPrices(String itineraryId, int price) {
+    AssignPricesCommand assignPricesCommand = new AssignPricesCommand(itineraryId, price, repository);
     invoker.executeCommand(assignPricesCommand);
     return true;
   }

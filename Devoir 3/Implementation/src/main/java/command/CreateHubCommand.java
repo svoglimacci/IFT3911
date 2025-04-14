@@ -1,7 +1,11 @@
 package command;
 import company.Airline;
 import factory.AirFactory;
+import factory.GroundFactory;
+import factory.SeaFactory;
 import hub.Airport;
+import hub.Port;
+import hub.TrainStation;
 import repository.Repository;
 
 public class CreateHubCommand  implements ICommand {
@@ -23,6 +27,18 @@ public class CreateHubCommand  implements ICommand {
            AirFactory airFactory = AirFactory.getInstance();
            Airport airport = airFactory.createHub(id, city);
            repository.addHub(airport, travelType);
+       }
+
+       if (travelType == TravelType.SEA) {
+           SeaFactory seaFactory = SeaFactory.getInstance();
+         Port port = seaFactory.createHub(id, city);
+           repository.addHub(port, travelType);
+       }
+
+       if (travelType == TravelType.GROUND) {
+         GroundFactory groundFactory = GroundFactory.getInstance();
+         TrainStation trainStation = groundFactory.createHub(id, city);
+          repository.addHub(trainStation, travelType);
        }
     }
 

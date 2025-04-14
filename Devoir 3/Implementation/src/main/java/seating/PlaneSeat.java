@@ -9,6 +9,7 @@ public class PlaneSeat extends Seating {
     this.isWindowSeat = isWindowSeat;
   }
 
+
   public boolean isWindowSeat() {
     return isWindowSeat;
   }

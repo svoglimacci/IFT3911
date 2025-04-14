@@ -11,23 +11,23 @@ public class ClientTripVisitor implements IVisitor{
 
   @Override
   public void visit(Itinerary itinerary) {
-     // YUL-YYZ:[AIRCAN]AC481(2014.11.28:06.00-2014.11.28:07:24)|237.00|E50
+
 
     StringBuilder sb = new StringBuilder();
 
-    // YUL-YYZ
+
     for (Hub hub : itinerary.getHubs()) {
       sb.append(hub.getId()).append("-");
     }
     sb.deleteCharAt(sb.length() - 1);
 
-   // :[AIRCAN]
+
     sb.append(":[").append(itinerary.getCompany().getId()).append("]");
 
-    // AC481
+
     sb.append(itinerary.getVehicle().getId());
 
-    // (2014.11.28:06.00-2014.11.28:07:24)
+
     String departureDate = itinerary.getDepartureDate().get(Calendar.YEAR) + "." + (itinerary.getDepartureDate()
         .get(Calendar.MONTH)) + "." + itinerary.getDepartureDate().get(
         Calendar.DAY_OF_MONTH) + ":" + itinerary.getDepartureDate().get(Calendar.HOUR_OF_DAY) + "." + itinerary.getDepartureDate().get(Calendar.MINUTE);
@@ -36,7 +36,7 @@ public class ClientTripVisitor implements IVisitor{
 
     sb.append("(").append(departureDate).append("-").append(arrivalDate).append(")");
 
-    // |237.00|E50
+
     Vehicle vehicle = itinerary.getVehicle();
     ArrayList<Section> sections = vehicle.getSections();
 

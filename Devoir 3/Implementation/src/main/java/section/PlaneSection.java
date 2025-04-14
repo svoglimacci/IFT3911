@@ -22,7 +22,6 @@ public class PlaneSection extends Section {
     int rows;
     int cols;
 
-    // Determine the number of columns based on the layout
     switch (layout) {
       case NARROW -> cols = 3;
       case COMFORT -> cols = 4;

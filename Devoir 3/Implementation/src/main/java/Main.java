@@ -7,6 +7,7 @@ import factory.AirFactory;
 import factory.TravelFactory;
 import hub.Airport;
 import hub.Hub;
+import itinerary.Cruise;
 import java.util.ArrayList;
 import java.util.Calendar;
 import itinerary.Flight;
@@ -15,6 +16,8 @@ import section.Layout;
 import section.TravelClass;
 import user.Client;
 import vehicle.Airplane;
+import vehicle.CruiseShip;
+import vehicle.Train;
 import view.AdminView;
 import view.ClientView;
 
@@ -26,12 +29,7 @@ public class Main {
 
   public static void main(String[] args) {
     Repository repository = new Repository();
-    repository.addVehicle(new Airplane("AC481"));
-    repository.addVehicle(new Airplane("AC482"));
-    repository.addTravelClass("F", 1.0, "Première");
-    repository.addTravelClass("A", 0.75, "Affaire");
-    repository.addTravelClass("E", 0.5, "Économique");
-    repository.addTravelClass("P", 0.6, "Économique Premium");
+
 
 
 
@@ -41,9 +39,11 @@ public class Main {
 
     AdminController adminController = new AdminController(repository);
     AdminView adminView = new AdminView(repository, adminController);
-    initializeData(adminView);
+    initializeData(adminView, repository);
     Scanner scanner = new Scanner(System.in);
     boolean running = true;
+
+    // print itineraries
 
     while (running) {
       System.out.println("\nEnter command (admin/client/exit): ");
@@ -58,13 +58,36 @@ public class Main {
     }
   }
 
-  private static void initializeData(AdminView view) {
+  private static void initializeData(AdminView view, Repository repository) {
+
+    repository.addVehicle(new Airplane("AC481"));
+    repository.addVehicle(new Airplane("AC482"));
+    repository.addVehicle(new Train("TC123"));
+    repository.addVehicle(new CruiseShip("CR123"));
+    repository.addTravelClass("F", 1.0, "Première");
+    repository.addTravelClass("A", 0.75, "Affaire");
+    repository.addTravelClass("E", 0.5, "Économique");
+    repository.addTravelClass("P", 0.6, "Économique Premium");
+    repository.addTravelClass("I", 0.5, "Intérieur");
+    repository.addTravelClass("O", 0.75, "Vue sur l'Océan");
+    repository.addTravelClass("S", 0.9, "Suite");
+    repository.addTravelClass("F", 0.9, "Famille");
+    repository.addTravelClass("D", 1.0, "Famille Deluxe");
 
     view.handleCreateHub("YUL", "Montreal", TravelType.AIR);
     view.handleCreateHub("YYZ", "Toronto", TravelType.AIR);
     view.handleCreateHub("YOW", "Ottawa", TravelType.AIR);
+    view.handleCreateHub("ABC", "Montreal", TravelType.SEA);
+    view.handleCreateHub("DEF", "Montreal", TravelType.SEA);
+    view.handleCreateHub("GHI", "Montreal", TravelType.GROUND);
+    view.handleCreateHub("JKL", "Montreal", TravelType.GROUND);
+
     view.handleCreateCompany("AIRCAN", TravelType.AIR);
     view.handleCreateCompany("DELTA", TravelType.AIR);
+    view.handleCreateCompany("CARNIVAL", TravelType.SEA);
+    view.handleCreateCompany("COSTA", TravelType.SEA);
+    view.handleCreateCompany("VIA", TravelType.GROUND);
+    view.handleCreateCompany("AMTRAK", TravelType.GROUND);
 
     view.handleCreateItinerary("YUL-YYZ", "AIRCAN", "AC481", new String[]{"YUL", "YYZ"},
         Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.AIR);
@@ -73,12 +96,30 @@ public class Main {
     view.handleCreateItinerary("YUL-YOW", "DELTA", "AC482", new String[]{"YUL", "YOW"},
         Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.AIR);
 
+    view.handleCreateItinerary("ABC-DEF", "CARNIVAL", "CR123", new String[]{"ABC", "DEF"},
+        Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.SEA);
+    view.handleCreateItinerary("DEF-ABC", "CARNIVAL", "CR123", new String[]{"DEF", "ABC"},
+        Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.SEA);
+
+    view.handleCreateItinerary("GHI-JKL", "VIA", "TC123", new String[]{"GHI", "JKL"},
+        Calendar.getInstance(), Calendar.getInstance(), 474, TravelType.GROUND);
+
     view.handleCreateSection("AC481", "F", Layout.NARROW, 12, TravelType.AIR);
     view.handleCreateSection("AC481", "A", Layout.COMFORT, 16, TravelType.AIR);
     view.handleCreateSection("AC481", "E", Layout.MEDIUM, 200, TravelType.AIR);
     view.handleCreateSection("AC482", "F", Layout.NARROW, 12, TravelType.AIR);
     view.handleCreateSection("AC482", "A", Layout.COMFORT, 16, TravelType.AIR);
     view.handleCreateSection("AC482", "E", Layout.LARGE, 200, TravelType.AIR);
+
+    view.handleCreateSection("CR123", "I", null , 12, TravelType.SEA);
+    view.handleCreateSection("CR123", "O", null, 16, TravelType.SEA);
+    view.handleCreateSection("CR123", "S", null, 200, TravelType.SEA);
+
+    view.handleCreateSection("TC123", "F", Layout.NARROW, 12, TravelType.GROUND);
+    view.handleCreateSection("TC123", "A", Layout.NARROW, 16, TravelType.GROUND);
+    view.handleCreateSection("TC123", "E", Layout.NARROW, 200, TravelType.GROUND);
+
+
 
   }
 
@@ -109,18 +150,24 @@ public class Main {
 
       switch (command) {
         case "1" -> {
+          System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
           System.out.print("Enter company ID: ");
           String companyId = scanner.nextLine();
-          adminView.handleCreateCompany(companyId, TravelType.AIR);
+          adminView.handleCreateCompany(companyId, TravelType.valueOf(travelType));
         }
         case "2" -> {
+          System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
           System.out.print("Enter hub ID: ");
           String hubId = scanner.nextLine();
           System.out.print("Enter city: ");
           String city = scanner.nextLine();
-          adminView.handleCreateHub(hubId, city, TravelType.AIR);
+          adminView.handleCreateHub(hubId, city, TravelType.valueOf(travelType));
         }
         case "3" -> {
+          System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
           System.out.print("Enter itinerary ID: ");
           String itineraryId = scanner.nextLine();
           System.out.print("Enter company ID: ");
@@ -132,25 +179,27 @@ public class Main {
           System.out.print("Enter price: ");
           int price = Integer.parseInt(scanner.nextLine());
           adminView.handleCreateItinerary(itineraryId, compId, vehicleId, hubs, 
-              Calendar.getInstance(), Calendar.getInstance(), price, TravelType.AIR);
+              Calendar.getInstance(), Calendar.getInstance(), price, TravelType.valueOf(travelType));
         }
         case "4" -> {
+          System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
           System.out.print("Enter vehicle ID: ");
           String vehId = scanner.nextLine();
-          System.out.print("Enter travel class (F/A/E/P): ");
+          System.out.print("Enter travel class (F/A/E/P/I/O/S/F/D): ");
           String travelClass = scanner.nextLine();
           System.out.print("Enter layout (NARROW/COMFORT/MEDIUM/LARGE): ");
           Layout layout = Layout.valueOf(scanner.nextLine());
           System.out.print("Enter number of seats: ");
           int seats = Integer.parseInt(scanner.nextLine());
-          adminView.handleCreateSection(vehId, travelClass, layout, seats, TravelType.AIR);
+          adminView.handleCreateSection(vehId, travelClass, layout, seats, TravelType.valueOf(travelType));
         }
         case "5" -> {
           System.out.print("Enter itinerary ID: ");
           String itinId = scanner.nextLine();
           System.out.print("Enter price: ");
           int prc = Integer.parseInt(scanner.nextLine());
-          adminView.handleAssignPrices(itinId, prc, TravelType.AIR);
+          adminView.handleAssignPrices(itinId, prc);
         }
         case "6" -> {
           System.out.print("Enter company ID to edit: ");
@@ -197,7 +246,11 @@ public class Main {
           String delItinId = scanner.nextLine();
           adminView.handleDeleteItinerary(delItinId);
         }
-        case "12" -> adminView.handleDisplayItineraries(TravelType.AIR);
+        case "12" -> {
+          System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
+          adminView.handleDisplayItineraries(TravelType.valueOf(travelType));
+        }
         case "13" -> adminView.handleUndo();
         case "14" -> adminView.restore();
         case "15" -> adminView.backup();
@@ -220,15 +273,21 @@ public class Main {
       String command = scanner.nextLine();
 
       switch (command) {
-        case "1" -> clientView.handleDisplayItineraries(TravelType.AIR);
+        case "1" -> {
+          System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
+          clientView.handleDisplayItineraries(TravelType.valueOf(travelType));
+        }
         case "2" -> {
+                    System.out.println("Enter travel type (AIR/SEA/GROUND): ");
+          String travelType = scanner.nextLine();
           System.out.print("Enter itinerary ID: ");
           String itineraryId = scanner.nextLine();
-          System.out.print("Enter travel class (F/A/E/P): ");
+          System.out.print("Enter travel class (F/A/E/P/I/O/S/F/D): ");
           String travelClass = scanner.nextLine();
           System.out.print("Window seat? (true/false): ");
           boolean isWindowSeat = Boolean.parseBoolean(scanner.nextLine());
-          clientView.handleReserveSeat(client, itineraryId, travelClass, TravelType.AIR, isWindowSeat);
+          clientView.handleReserveSeat(client, itineraryId, travelClass,TravelType.valueOf(travelType), isWindowSeat);
         }
         case "3" -> {
           System.out.print("Enter reservation number: ");

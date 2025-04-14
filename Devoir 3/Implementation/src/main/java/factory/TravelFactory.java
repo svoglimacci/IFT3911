@@ -7,7 +7,10 @@ import company.Company;
 import hub.Airport;
 import java.util.ArrayList;
 import java.util.Calendar;
+import section.Layout;
+import section.PlaneSection;
 import section.Section;
+import section.TravelClass;
 import vehicle.Vehicle;
 import hub.Hub;
 import itinerary.Itinerary;
@@ -30,11 +33,10 @@ public abstract class TravelFactory {
 
   public abstract Company createCompany(String id);
 
-  public abstract Vehicle createVehicle();
+  public abstract Vehicle createVehicle(String id);
 
   public abstract Hub createHub(String id, String city);
 
-  public abstract Section createSection();
 
   public TravelType getTravelType() {
     if (this instanceof SeaFactory) {
@@ -47,4 +49,6 @@ public abstract class TravelFactory {
       throw new IllegalStateException("Unknown travel factory type: " + this.getClass().getName());
     }
   }
+
+  public abstract Section createSection(TravelClass travelclass, Layout layout, int nbSeats);
 }
