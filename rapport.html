@@ -269,9 +269,14 @@
         Voici quelques hypothèses et notre raisonnement :
     </p>
         <ul>
+          <li>Correction du diagramme de classe: setState(reserved: Reserved) devient setState(seatingState: SeatingState)</li>
           <li>Chaque état est représenté par une sous-classe d’une classe abstraite (ou interface) commune (SeatingState ici), ce qui permet d’implémenter des comportements spécifiques pour chaque état (Available, Reserved, Confirmed).</li>
           <li>Le patron suit le principe ouvert/fermé : on peut ajouter de nouveaux états sans modifier les classes existantes.</li>
           <li>Il est particulièrement utile pour éviter les structures conditionnelles complexes (ex: if/else ou switch) dans les méthodes, en déléguant le comportement à l’objet représentant l’état.</li>
+          <li>Afin de simplifier le diagramme de séquence, l’« Actor » représente un regroupement conceptuel des classes liées au client et englobe à la fois les actions effectuées par ce dernier ainsi que ses interactions avec le système.</li>
+          <li>Il n'y a pas de flêche à Confirmed, car celui est l'état final d'un siège.</li>
+          <li>Seating est le context.</li>
+          <li>Available, Confirm et Reserved sont les états concrèts.</li>
         </ul>
 
         <u><h2>Observateur</h2></u>
@@ -293,6 +298,9 @@
                     <li>Des observateurs concrets (ici ClientView et AdminView) qui mettent à jour leur affichage ou leur logique en réponse à une notification.</li>
                 </ul>
             <li>Il permet de découpler la logique métier de l’interface utilisateur, rendant le système plus modulaire, maintenable et extensible.</li>
+            <li>Il y a beaucoup de méthodes qui changent l'état dans Repository (add, delete, edit, ...). Pour simplifier, ces méthodes sont résumées à « change state ».</li>
+            <li>Repository est Observable</li>
+            <li>ClientView et AdminView sont les observeurs concrèts</li>
           </ul>
     
     <u><h2>Commande</h2></u>
@@ -328,8 +336,11 @@
         Voici quelques hypothèses et notre raisonnement :
     </p>
         <ul>
-            <li>Il permet d’introduire de nouvelles opérations sur des objets existants — comme c’est le cas ici avec AdminTripVisitor et ClientTripVisitor appliqués à des objets de type Itinerary — sans modifier leur structure interne, tout en respectant le principe ouvert/fermé.</li>
+            <li>Le patron Visiteur permet d’introduire de nouvelles opérations sur des objets existants tels que AdminTripVisitor et ClientTripVisitor, qui sont appliquées à des objets de type Itinerary sans modifier leur structure interne, tout en respectant le principe OCP.</li>
             <li>En général, ce patron est composé d’une interface IVisitor qui définit la méthode visit() pour les types d’objets qu’on veut parcourir, d’une ou plusieurs classes concrètes comme AdminTripVisitor ou ClientTripVisitor qui implémentent chacune leur propre logique, et d’une interface IVisitable (comme ici Itinerary) qui permet à l’objet de recevoir un visiteur via la méthode acceptVisitor(IVisitor).</li>
+            <li>Itinerary est l'élément concrèt à visiter</li>
+            <li>AdminTripVisitor et ClientTripVisitor sont les deux visiteurs concrèts</li>
+            <li>La structure de donnée implémentée pour les itinéraire est ArrayList&lt;Itinerary&gt;. C'est pourquoi la boucle pour accepter la visite pour chaque itinéraire de la liste.</li>
         </ul>
 
     <u><h2>Strategie</h2></u>
@@ -340,10 +351,9 @@
         Voici quelques hypothèses et notre raisonnement :
     </p>    
         <ul>
-            <li>Le patron de stratégie est utilisé ici pour encapsuler différentes méthodes de paiement (comme PayByCreditCard) derrière une interface commune PayStrategy.</li>
+            <li>Nous avons décidé d'implémenter le patron Stratégie pour encapsuler les modes de paiement. Ceci permettrait au code d'être plus flexible s'il y a ajout d'autres modes de paiement. (OCP)</li>
             <li>Chaque stratégie implémente sa propre version des méthodes pay(amount) et setPaymentDetails(), ce qui permet de changer dynamiquement la méthode de paiement sans modifier la classe Transaction.</li>
             <li>Transaction joue le rôle de contexte : elle délègue l’exécution de l’opération à l’objet PayStrategy qu’elle reçoit en paramètre via la méthode process().</li>
-            <li>Il rend le code plus flexible et maintenable, surtout quand on veut ajouter de nouveaux moyens de paiement (PayPal, crypto, etc.) sans toucher au code déjà existant.</li>
         </ul>   
 
     <u><h2>Memento</h2></u>
@@ -354,16 +364,18 @@
         Voici quelques hypothèses et notre raisonnement :
     </p>    
         <ul>
+            <li>Nous avons décidé d'implémenter le patron Memento avec le patron Commande pour permettre de sauvegarder l'état du Repository avant l'exécution d'une commande. Ceci permettrait d'annuler ou restaurer l'état en cas de undo().</li>
             <li>Repository joue le rôle de Originator : il peut créer un objet Memento contenant une copie de son état (companies, vehicles, itineraries, etc.) grâce à la méthode saveState().</li>
             <li>La classe Invoker agit comme Caretaker : elle sauvegarde les états dans une pile (mementoHistory) via save(), et peut restaurer un état précédent avec restore().</li>
-            <li>Il est particulièrement utile ici pour implémenter la fonctionnalité d’annulation (undo()) de manière propre et encapsulée, sans exposer les détails internes du Repository.</li>
         </ul>
     
-    <u><h2>Qualite de notre conception amélioré</h2></u>      
+    <u><h2>Qualite de notre conception amélioré</h2></u> 
+    <p>Dans le DM2, le système se basait principalement sur une architecture MVC, ce qui offrait une séparation des données, la logique de contrôle et l'interface. Cependant, l'implémentation ne suffisait pas à assurer la flexibilité, réutilisabilité et maintenabilité du code. Le DM3 a introduit plusieurs patrons de conception pour améliorer la qualité de notre conception.</p>   
         <ul>
-            <li>Plusieurs classes (notamment Client et Administrator) violaient initialement le principe de responsabilité unique (SRP). Le nouveau design introduit une séparation claire des responsabilités, grâce à une meilleure application du modèle MVC et à l’intégration du patron Observer. Chaque classe remplit désormais un rôle précis : les vues sont responsables de l’interaction avec l’utilisateur, les contrôleurs centralisent la logique métier, et les modèles (comme Repository) gèrent les données.</li>
-            <li>Les modifications apportées permettent également de mieux découpler les composants, en particulier grâce à l’Observer, qui assure une synchronisation automatique entre les données et les interfaces graphiques sans dépendance directe. Toutes les actions possibles — qu’elles soient initiées par l’utilisateur ou déclenchées par des événements — passent désormais par les contrôleurs, ce qui améliore la cohérence, la maintenabilité et la testabilité de l’application.</li>
-        </ul>             
+            <li>Plusieurs classes (notamment Client et Administrator) violaient le principe de responsabilité unique (SRP). Le nouveau design introduit une séparation claire des responsabilités, grâce à une meilleure application du modèle MVC et à l’intégration du patron Observer. Chaque classe remplit désormais un rôle précis : les vues sont responsables de l’interaction avec l’utilisateur, les contrôleurs centralisent la logique métier, et les modèles (comme Repository) gèrent les données.</li>
+            <li>Les modifications apportées permettent également de mieux découpler les composants, en particulier grâce à l’Observer, qui assure une synchronisation automatique entre les données et les interfaces graphiques sans dépendance directe. Toutes les actions possibles qu’elles soient initiées par l’utilisateur ou déclenchées par des événements, passent désormais par les contrôleurs. Ce changement améliore la cohérence, la maintenabilité et la testabilité de l’application.</li>
+        </ul>
+    <p>En conclusion, par l'introduction et combinaisons de plusieurs patrons de conception et l'application des principes de conception, le DM3 a permis d'améliorer considérablement la qualité de notre conception du système de voyage. Ces changements rendent le code plus modulaire, extensible et maintenable, tout en respectant les principes SOLID.</p>
             
     <div id="shimeji-workArea"
       style="position: fixed; background: transparent; z-index: 2147483643; width: 100vw; height: 100vh; left: 0px; top: 0px; transform: translate(0px, 0px); pointer-events: none;">
