@@ -323,6 +323,7 @@
                 </ul>
             <li>Il permet de découpler l’émetteur d’une commande (AdminController) de son exécution réelle (implémentée dans les classes Command), en suivant le principe de responsabilité unique.</li>
             <li>Il est aussi très utile pour implémenter des fonctionnalités d'annulation ou d'historique, comme c'est le cas ici avec Invoker.undo().</li>
+            <li>Nous avons choisie de representer uniquement l'option Create (Edit et Delete on ete omis) afin de simplifier le diagramme de sequence.</li>
         </ul>
 
     <u><h2>Visiteur</h2></u>
@@ -369,11 +370,12 @@
             <li>La classe Invoker agit comme Caretaker : elle sauvegarde les états dans une pile (mementoHistory) via save(), et peut restaurer un état précédent avec restore().</li>
         </ul>
     
-    <u><h2>Qualite de notre conception amélioré</h2></u> 
+    <u><h2>Qualité de notre conception amélioré</h2></u> 
     <p>Dans le DM2, le système se basait principalement sur une architecture MVC, ce qui offrait une séparation des données, la logique de contrôle et l'interface. Cependant, l'implémentation ne suffisait pas à assurer la flexibilité, réutilisabilité et maintenabilité du code. Le DM3 a introduit plusieurs patrons de conception pour améliorer la qualité de notre conception.</p>   
         <ul>
-            <li>Plusieurs classes (notamment Client et Administrator) violaient le principe de responsabilité unique (SRP). Le nouveau design introduit une séparation claire des responsabilités, grâce à une meilleure application du modèle MVC et à l’intégration du patron Observer. Chaque classe remplit désormais un rôle précis : les vues sont responsables de l’interaction avec l’utilisateur, les contrôleurs centralisent la logique métier, et les modèles (comme Repository) gèrent les données.</li>
-            <li>Les modifications apportées permettent également de mieux découpler les composants, en particulier grâce à l’Observer, qui assure une synchronisation automatique entre les données et les interfaces graphiques sans dépendance directe. Toutes les actions possibles qu’elles soient initiées par l’utilisateur ou déclenchées par des événements, passent désormais par les contrôleurs. Ce changement améliore la cohérence, la maintenabilité et la testabilité de l’application.</li>
+            <li>Plusieurs classes (notamment Client et Administrator) violaient initialement le principe de responsabilité unique (SRP). Le nouveau design introduit une séparation claire des responsabilités, grâce à une meilleure application du modèle MVC et à l’intégration du patron Observer. Chaque classe remplit désormais un rôle précis : les vues sont responsables de l’interaction avec l’utilisateur, les contrôleurs centralisent la logique métier, et les modèles (comme Repository) gèrent les données.</li>
+            <li>Les modifications apportées permettent également de mieux découpler les composants, en particulier grâce à l’Observer, qui assure une synchronisation automatique entre les données et les interfaces graphiques sans dépendance directe. Toutes les actions possibles — qu’elles soient initiées par l’utilisateur ou déclenchées par des événements — passent désormais par les contrôleurs, ce qui améliore la cohérence, la maintenabilité et la testabilité de l’application.</li>
+            <li>L'utilisation du patron d'Observateur en plus de l'utilisation du Singleton Repository  garantit un point de référence des données centralisé et cohérent entre les différentes vues, créant une meilleur cohésion ainsi qu'un couplage faible en comparaison avec le devoir 2 ou plusieurs entités différentes accedait ou modifiait les données. Cette nouvelle version permet aux utilisateurs de s'abonner au repository et d'être automatiquement notifié lors de changements. </li>
         </ul>
     <p>En conclusion, par l'introduction et combinaisons de plusieurs patrons de conception et l'application des principes de conception, le DM3 a permis d'améliorer considérablement la qualité de notre conception du système de voyage. Ces changements rendent le code plus modulaire, extensible et maintenable, tout en respectant les principes SOLID.</p>
             
